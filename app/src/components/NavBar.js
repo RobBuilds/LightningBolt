@@ -33,9 +33,9 @@ function NavBar() {
 
   return (
     <div>
-      <AppBar position="static" color="inherit" className="app-bar">
+      <AppBar position="static" style={{ backgroundColor: 'black' }}>
         <Toolbar className="toolbar">
-          <div />
+    <div />
           <IconButton edge="end" color="inherit" aria-label="menu" onClick={toggleDrawer(true)} className="menu-button">
             <MenuIcon />
           </IconButton>
