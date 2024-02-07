@@ -15,7 +15,6 @@ This project uses several key technologies:
 
 - Express for server-side logic
 - MUI (Material-UI) and Tailwind CSS for styling
-- Jest for running tests
 - Puppeteer for web scraping
 - React for building the user interface
 
@@ -33,7 +32,7 @@ cd LightningBolt
 
 3. Install the required dependencies:
 
-npm i express mui tailwind jest puppeteer react
+npm i express mui tailwind puppeteer react
 
 
 ## Usage
