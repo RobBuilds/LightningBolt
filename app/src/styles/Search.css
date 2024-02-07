@@ -1,0 +1,31 @@
+.container {
+  color: black;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: -25rem; /* Adjust this value as needed */
+}
+
+.switch-container {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.method-container {
+  margin-top: 1rem;
+}
+
+.search-bar {
+  width: 900px;
+}
