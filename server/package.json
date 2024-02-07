@@ -8,7 +8,7 @@
     "puppeteer": "^22.0.0",
     "react": "^18.2.0",
     "tailwind": "^4.0.0",
-    "uuid": "^8.3.2" // Updated to a newer version to avoid deprecation issues
+    "uuid": "^8.3.2" 
   },
   "scripts": {
     "start": "node server.js" 
