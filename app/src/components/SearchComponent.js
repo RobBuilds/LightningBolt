@@ -31,6 +31,9 @@ const useStyles = makeStyles({
       backgroundColor: 'purple',
     },
   },
+  activeButton: {
+    backgroundColor: 'purple',
+  },
 });
 
 const theme = createTheme({
@@ -103,7 +106,7 @@ function SearchComponent() {
           <div className="buttons-container">
             <Button variant="contained" className={`${classes.button} bg-gray-300 text-black`}>Web Search</Button>
             <Button variant="contained" className={`${classes.button} bg-gray-300 text-black`} onClick={() => window.location.href = 'http://localhost:5001'}>Spiderfoot</Button>
-            <Button variant="contained" className={`${classes.button} bg-gray-300 text-black`} onClick={handleDatabaseClick}>Database</Button>
+            <Button variant="contained" className={`${classes.button} bg-gray-300 text-black ${showData ? classes.activeButton : ''}`} onClick={handleDatabaseClick}>Database</Button>
           </div>
         </div>
       </ThemeProvider>
