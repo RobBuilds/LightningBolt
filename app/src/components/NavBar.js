@@ -4,8 +4,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 import { Link } from 'react-router-dom';
 import '../styles/NavBar.css';
 
-
-
 function NavBar() {
   const [drawerOpen, setDrawerOpen] = useState(false);
 

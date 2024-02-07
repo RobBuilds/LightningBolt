@@ -47,7 +47,7 @@ const aboutDetails = [
     title: "Contributors:",
     content: "Thank you to all who contributed to this project: Charles Sanders, Tyrelle Robinson, Tommy Daniel, Braden Walker. See our contact page for more info.",
   }
-  
+
 ];
 
 const AboutPage = () => {
