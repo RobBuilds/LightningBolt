@@ -17,7 +17,7 @@ import TwitterIcon from "@material-ui/icons/Twitter";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    maxWidth: 360,
+    maxWidth: 500,
     backgroundColor: theme.palette.background.paper,
   },
   inline: {
@@ -47,21 +47,21 @@ const contributors = [
   },
   {
     name: "Tyrelle Robinson",
-    role: "Developer",
+    role: "Software Developer",
     contribution: "Frontend/Backend Development",
     github: "https://github.com/RobBuilds",
     linkedin: "https://linkedin.com/in/XXXXXXXXXXXXXXX",
     twitter: "https://twitter.com/XXXXXXXXXXXXXXXXXXXX",
-    avatar: "https://contrib.rocks/image?repo=RobBuilds/LightningBolt",
+    avatar: "https://contrib.rocks/image?repo=RobBuilds/toDoListBoi",
   },
   {
     name: "Tommy Daniel",
-    role: "Developer",
+    role: "Software Developer",
     contribution: "Frontend/Backend Development",
     github: "https://github.com/tdronin",
     linkedin: "https://linkedin.com/in/XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
     twitter: "https://twitter.com/XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-    avatar: "https://contrib.rocks/image?repo=https://github.com/tdronin/todo-list",
+    avatar: "https://contrib.rocks/image?repo=https://github.com/tdronin/knex",
   }
 ];
 
@@ -95,6 +95,7 @@ const ContactPage = () => {
                     >
                       Role: {contributor.role}
                     </Typography>
+                    <br />
                     <Typography
                       component="span"
                       variant="body2"
@@ -157,16 +158,6 @@ const ContactPage = () => {
         </List>
       </Grid>
       <Grid item xs={12} sm={4}>
-        <img
-          src="../../btc.png"
-          alt="Bitcoin"
-          style={{
-            width: "165%",
-            height: "100%",
-            objectFit: "cover",
-            marginLeft: "-190px",
-          }}
-        />
       </Grid>
     </Grid>
   );
