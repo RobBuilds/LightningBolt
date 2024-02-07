@@ -35,7 +35,10 @@ cd LightningBolt
 
 npm i express mui tailwind jest puppeteer react knex
 
+## Server
+1. Install the required dependencies
 
+npm i express mui tailwind jest puppeteer react knex chatgpt dotenv
 ## Usage
 
 The usage instructions for LightningBolt are to be determined. Stay tuned for updates on how to utilize this powerful open-source intelligence tool.
