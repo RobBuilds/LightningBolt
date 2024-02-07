@@ -1,7 +1,8 @@
 import React from 'react';
 import '../styles/Search.css';
-import { Button, TextField, Switch, makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core';
+import { Button, TextField, Switch, makeStyles, ThemeProvider } from '@material-ui/core';
 import { purple } from '@material-ui/core/colors';
+import { createTheme } from '@material-ui/core/styles';
 
 /*  ------------------ SearchComponent -----------------------
     This is a SearchComponent that uses Material-UI components.
@@ -37,7 +38,7 @@ const useStyles = makeStyles({
 /* ------------------ Toggle Switch -------------------------
                 MUI THEME for the Toggle Switch
    ----------------------------------------------------------  */
-const theme = createMuiTheme({
+const theme = createTheme({
   palette: {
     primary: purple,
   },
