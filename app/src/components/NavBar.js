@@ -1,16 +1,25 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
+import React, { useState } from 'react';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import Button from '@mui/material/Button';
+import { useHistory } from 'react-router-dom';
 
-export default function BasicMenu() {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+function NavigationMenu() {
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+  const history = useHistory();
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleNavigate = (path) => {
+    history.push(path);
+    handleClose();
   };
 
   return (
@@ -33,10 +42,11 @@ export default function BasicMenu() {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={handleClose}>Home</MenuItem>
-        <MenuItem onClick={handleClose}>About</MenuItem>
-        <MenuItem onClick={handleClose}>Contact</MenuItem>
+        <MenuItem onClick={() => handleNavigate('/about')}>About</MenuItem>
+        <MenuItem onClick={() => handleNavigate('/contact')}>Contact</MenuItem>
       </Menu>
     </div>
   );
 }
+
+export default NavigationMenu;
