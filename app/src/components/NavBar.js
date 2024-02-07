@@ -1,8 +1,7 @@
-// NavBar.js
-
 import React, { useState } from 'react';
 import { AppBar, Toolbar, IconButton, Drawer, List, ListItem, ListItemText } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
+import { Link } from 'react-router-dom';
 import '../styles/NavBar.css';
 
 function NavBar() {
@@ -24,7 +23,9 @@ function NavBar() {
       <List>
         {['Home', 'About', 'Contact'].map((text, index) => (
           <ListItem button key={text} className="list-item">
-            <ListItemText primary={text} />
+            <Link to={`/${text.toLowerCase()}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+              <ListItemText primary={text} />
+            </Link>
           </ListItem>
         ))}
       </List>
@@ -35,7 +36,7 @@ function NavBar() {
     <div>
       <AppBar position="static" style={{ backgroundColor: 'black' }}>
         <Toolbar className="toolbar">
-    <div />
+          <div />
           <IconButton edge="end" color="inherit" aria-label="menu" onClick={toggleDrawer(true)} className="menu-button">
             <MenuIcon />
           </IconButton>
