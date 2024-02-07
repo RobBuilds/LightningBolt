@@ -1,1 +1,22 @@
+<<<<<<< HEAD
+.git/
+
+build
+dist
+*.egg-info
+*.egg/
+*.pyc
+*.swp
+
+venv/
+cache/
+log/
+spiderfoot.db*
+spiderfoot.test.db
+
+__pycache__
+htmlcov/
+docs/
+=======
 node_modules
+>>>>>>> origin/Developer
