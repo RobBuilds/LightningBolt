@@ -1,0 +1,43 @@
+# This is the name of your workflow, it can be anything you want
+name: Node.js CI
+
+# This workflow gets triggered on every push to files ending with .test.js
+on:
+  push:
+    branches:
+      - Developer
+    paths:
+      - '**/*.test.js'  # This will search for any file that ends with .test.js
+
+jobs:
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # This is the maximum time that a workflow can run before GitHub automatically cancels it
+    timeout-minutes: 720  # This was used to set to give time for the node_modules to install
+
+    # A strategy for a matrix build job. You can define different variations of an environment to run each configuration simultaneously.
+    strategy:
+      matrix:
+        # Here we specify which versions of Node.js we want our tests to run on.
+        # You can specify as many versions as you want.
+        node-version: [16.x, 20.x]  # This can change depending on your environment
+
+    steps:
+    # This step checks out a copy of your repository
+    - uses: actions/checkout@v2
+
+    # This step sets up Node.js using the version specified in the matrix above
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    # This step installs your dependencies using npm
+    - name: Install dependencies
+      run: npm install --legacy-peer-deps
+
+    # This step runs your tests using npm
+    - name: Run tests
+      run: npm test
