@@ -3,6 +3,7 @@ import '../styles/Search.css';
 import { Button, TextField, Switch, makeStyles, ThemeProvider } from '@material-ui/core';
 import { purple } from '@material-ui/core/colors';
 import { createTheme } from '@material-ui/core/styles';
+import {useNavigate} from 'react-router-dom'
 
 /*  ------------------ SearchComponent -----------------------
     This is a SearchComponent that uses Material-UI components.
@@ -50,7 +51,7 @@ const theme = createTheme({
 function SearchComponent() {
   const classes = useStyles();
   const [method, setMethod] = React.useState(false);
-
+  const navigate = useNavigate();
   const handleToggle = () => {
     setMethod(!method);
   };
@@ -75,7 +76,7 @@ function SearchComponent() {
         {/* MUI Buttons */}
         <div className="buttons-container">
           <Button variant="contained" className={`${classes.button} bg-gray-300 text-black`}>Web Search</Button>
-          <Button variant="contained" className={`${classes.button} bg-gray-300 text-black`}>Spiderfoot</Button>
+          <Button variant="contained" className={`${classes.button} bg-gray-300 text-black`} onClick={() => window.location.href = 'http://localhost:5001'}>Spiderfoot</Button>
           <Button variant="contained" className={`${classes.button} bg-gray-300 text-black`}>Database</Button>
         </div>
       </div>
