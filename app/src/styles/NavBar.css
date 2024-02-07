@@ -1,0 +1,23 @@
+/* NavBar.css */
+
+.app-bar {
+  background-color: black;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+}
+
+.menu-button {
+  margin-right: -2rem; /* Adjust this value as needed */
+}
+
+.drawer {
+  width: 500px; /* Adjust this value as needed */
+}
+
+.list-item {
+  padding-left: 2rem; /* Adjust this value as needed */
+  padding-right: 2rem; /* Adjust this value as needed */
+}

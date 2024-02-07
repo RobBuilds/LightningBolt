@@ -17,6 +17,7 @@ This project uses several key technologies:
 - MUI (Material-UI) and Tailwind CSS for styling
 - Puppeteer for web scraping
 - React for building the user interface
+- Knex.js for making simplified queries to the database
 
 ### Installation
 
@@ -32,7 +33,7 @@ cd LightningBolt
 
 3. Install the required dependencies:
 
-npm i express mui tailwind puppeteer react
+npm i express mui tailwind jest puppeteer react knex
 
 
 ## Usage

@@ -1,52 +1,51 @@
+// NavBar.js
+
 import React, { useState } from 'react';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Button from '@mui/material/Button';
-import { useHistory } from 'react-router-dom';
+import { AppBar, Toolbar, IconButton, Drawer, List, ListItem, ListItemText } from '@material-ui/core';
+import MenuIcon from '@material-ui/icons/Menu';
+import '../styles/NavBar.css';
 
-function NavigationMenu() {
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-  const history = useHistory();
+function NavBar() {
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  const toggleDrawer = (open) => (event) => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+    setDrawerOpen(open);
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleNavigate = (path) => {
-    history.push(path);
-    handleClose();
-  };
+  const list = () => (
+    <div
+      role="presentation"
+      onClick={toggleDrawer(false)}
+      onKeyDown={toggleDrawer(false)}
+    >
+      <List>
+        {['Home', 'About', 'Contact'].map((text, index) => (
+          <ListItem button key={text} className="list-item">
+            <ListItemText primary={text} />
+          </ListItem>
+        ))}
+      </List>
+    </div>
+  );
 
   return (
     <div>
-      <Button
-        id="basic-button"
-        aria-controls={open ? 'basic-menu' : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? 'true' : undefined}
-        onClick={handleClick}
-      >
-        Menu
-      </Button>
-      <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        MenuListProps={{
-          'aria-labelledby': 'basic-button',
-        }}
-      >
-        <MenuItem onClick={() => handleNavigate('/about')}>About</MenuItem>
-        <MenuItem onClick={() => handleNavigate('/contact')}>Contact</MenuItem>
-      </Menu>
+      <AppBar position="static" color="inherit" className="app-bar">
+        <Toolbar className="toolbar">
+          <div />
+          <IconButton edge="end" color="inherit" aria-label="menu" onClick={toggleDrawer(true)} className="menu-button">
+            <MenuIcon />
+          </IconButton>
+        </Toolbar>
+      </AppBar>
+      <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)} className="drawer">
+        {list()}
+      </Drawer>
     </div>
   );
 }
 
-export default NavigationMenu;
+export default NavBar;
