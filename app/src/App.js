@@ -1,7 +1,7 @@
 import './App.css';
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import BasicMenu from './components/NavBar';
+import NavigationMenu from './components/NavBar';
 import { AboutPage, ContactPage } from './components'
 
 function App() {
