@@ -15,7 +15,6 @@ This project uses several key technologies:
 
 - Express for server-side logic
 - MUI (Material-UI) and Tailwind CSS for styling
-- Jest for running tests
 - Puppeteer for web scraping
 - React for building the user interface
 - Knex.js for making simplified queries to the database
