@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # SpiderFoot specific #
 #######################
 /cache/
@@ -173,3 +174,6 @@ cover/
 # Documentation #
 #################
 docs/_build/
+=======
+node_modules
+>>>>>>> origin/Developer

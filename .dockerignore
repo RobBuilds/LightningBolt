@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .git/
 
 build
@@ -16,3 +17,6 @@ spiderfoot.test.db
 __pycache__
 htmlcov/
 docs/
+=======
+node_modules
+>>>>>>> origin/Developer
