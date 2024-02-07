@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <a href="https://www.spiderfoot.net/r.php?u=aHR0cHM6Ly93d3cuc3BpZGVyZm9vdC5uZXQv&s=os_gh"><img src="https://www.spiderfoot.net/wp-content/themes/spiderfoot/img/spiderfoot-wide.png"></a>
 
 
@@ -11,7 +10,7 @@
 [![Twitter Follow](https://img.shields.io/twitter/follow/spiderfoot?label=follow&style=social)](https://twitter.com/spiderfoot)
 [![Discord](https://img.shields.io/discord/770524432464216074)](https://discord.gg/vyvztrG)
 
-**SpiderFoot** is an open source intelligence (OSINT) automation tool. It integrates with just about every data source available and utilises a range of methods for data analysis, making that data easy to navigate. 
+**SpiderFoot** is an open source intelligence (OSINT) automation tool. It integrates with just about every data source available and utilises a range of methods for data analysis, making that data easy to navigate.
 
 SpiderFoot has an embedded web-server for providing a clean and intuitive web-based interface but can also be used completely via the command-line.  It's written in **Python 3** and **MIT-licensed**.
 
@@ -69,7 +68,7 @@ You can target the following entities in a SpiderFoot scan:
  - Username
  - Person's name
  - Bitcoin address
- 
+
 SpiderFoot's 200+ modules feed each other in a publisher/subscriber model to ensure maximum data extraction to do things like:
 
 - [Host/sub-domain/TLD enumeration/extraction](https://asciinema.org/a/295912)
@@ -365,66 +364,3 @@ Whois|Perform a WHOIS look-up on domain names and owned netblocks.|Internal
 Read more at the [project website](https://www.spiderfoot.net/r.php?u=aHR0cHM6Ly93d3cuc3BpZGVyZm9vdC5uZXQv&s=os_gh), including more complete documentation, blog posts with tutorials/guides, plus information about [SpiderFoot HX](https://www.spiderfoot.net/r.php?u=aHR0cHM6Ly93d3cuc3BpZGVyZm9vdC5uZXQvaHgvCg==&s=os_gh).
 
 Latest updates announced on [Twitter](https://twitter.com/spiderfoot).
-=======
-# LightningBolt
-
-LightningBolt is an open-source intelligence application designed to empower users by scraping websites and obtaining the specific information they are searching for. This tool leverages a modern tech stack including Node.js, Express, MUI (Material-UI), Tailwind CSS, Jest for testing, Puppeteer for web scraping, and React for the frontend.
-
-## Getting Started
-
-### Prerequisites
-
-Before you can run LightningBolt on your machine, make sure you have the following installed:
-
-- Node.js
-- npm (Node package manager)
-
-This project uses several key technologies:
-
-- Express for server-side logic
-- MUI (Material-UI) and Tailwind CSS for styling
-- Puppeteer for web scraping
-- React for building the user interface
-- Knex.js for making simplified queries to the database
-
-### Installation
-
-To get LightningBolt up and running, follow these steps:
-
-1. Clone the repository to your local machine:
-
-git clone https://github.com/RobBuilds/LightningBolt.git
-
-2. Navigate to the LightningBolt directory:
-
-cd LightningBolt
-
-3. Install the required dependencies:
-
-npm i express mui tailwind jest puppeteer react knex
-
-
-## Usage
-
-The usage instructions for LightningBolt are to be determined. Stay tuned for updates on how to utilize this powerful open-source intelligence tool.
-
-## Features
-
-The feature list for LightningBolt is currently being developed. Expect updates as new functionalities are implemented and refined.
-
-## Contributing
-
-Contribution guidelines for LightningBolt are to be determined. If you're interested in contributing to the project, please check back later for more information on how you can help.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
-
-## Contact
-
-[Your contact information]
-
-## Acknowledgments
-
-[To be added if any]
->>>>>>> origin/Developer
