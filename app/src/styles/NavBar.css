@@ -1,7 +1,10 @@
 /* NavBar.css */
-
 .app-bar {
+  width: 100%;
   background-color: black;
+  position: fixed;
+  top: 0;
+  z-index: 1000; /* Increase this value */
 }
 
 .toolbar {
@@ -14,10 +17,34 @@
 }
 
 .drawer {
-  width: 500px; /* Adjust this value as needed */
+  width: 100%; /* Full width on small devices */
 }
 
 .list-item {
-  padding-left: 2rem; /* Adjust this value as needed */
-  padding-right: 2rem; /* Adjust this value as needed */
+  padding-left: 1rem; /* Adjust this value as needed */
+  padding-right: 1rem; /* Adjust this value as needed */
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  .drawer {
+    width: 250px; /* Adjust this value as needed */
+  }
+
+  .list-item {
+    padding-left: 2rem; /* Adjust this value as needed */
+    padding-right: 2rem; /* Adjust this value as needed */
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .drawer {
+    width: 300px; /* Adjust this value as needed */
+  }
+
+  .list-item {
+    padding-left: 3rem; /* Adjust this value as needed */
+    padding-right: 3rem; /* Adjust this value as needed */
+  }
 }
