@@ -1,6 +1,6 @@
 # LightningBolt
 
-LightningBolt is an open-source intelligence application designed to empower users by scraping websites and obtaining the specific information they are searching for. This tool leverages a modern tech stack including Node.js, Express, MUI (Material-UI), Tailwind CSS, Jest for testing, Puppeteer for web scraping, and React for the frontend.
+LightningBolt is an open-source intelligence application designed to empower users by scraping websites and obtaining the specific information they are searching for. This tool leverages a modern tech stack including Node.js, PostgreSQL for the database, Knex.js for database queries, Express, MUI (Material-UI), Tailwind CSS, ChatGPT, Puppeteer for web scraping, and React for the frontend.
 
 ## Getting Started
 
@@ -18,6 +18,8 @@ This project uses several key technologies:
 - Puppeteer for web scraping
 - React for building the user interface
 - Knex.js for making simplified queries to the database
+- ChatGPT for AI interaction
+- PostgreSQL for database interaction
 
 ### Installation
 
@@ -33,7 +35,7 @@ cd LightningBolt
 
 3. Install the required dependencies:
 
-npm i express mui tailwind jest puppeteer react knex
+npm i --legacy-peer-deps express mui @mui/material @material-ui/core @material-ui/icons @mui/icons-material pg tailwind tailwindcss tailwindscss puppeteer react react-dom react-router-dom react-scripts knex chatgpt
 
 ## Server
 1. Install the required dependencies
