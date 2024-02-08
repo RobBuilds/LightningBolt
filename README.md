@@ -37,7 +37,10 @@ cd LightningBolt
 
 npm i --legacy-peer-deps express mui @mui/material @material-ui/core @material-ui/icons @mui/icons-material pg tailwind tailwindcss tailwindscss puppeteer react react-dom react-router-dom react-scripts knex chatgpt
 
+## Server
+1. Install the required dependencies
 
+npm i express mui tailwind jest puppeteer react knex chatgpt dotenv axios
 ## Usage
 
 The usage instructions for LightningBolt are to be determined. Stay tuned for updates on how to utilize this powerful open-source intelligence tool.
