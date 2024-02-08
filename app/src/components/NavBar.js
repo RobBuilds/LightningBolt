@@ -4,7 +4,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import { Link } from 'react-router-dom';
 import '../styles/NavBar.css';
 
-function NavBar() {
+function NavBar({ onAboutClick, onContactClick }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const toggleDrawer = (open) => (event) => {
@@ -12,6 +12,16 @@ function NavBar() {
       return;
     }
     setDrawerOpen(open);
+  };
+
+  const handleLinkClick = (text) => {
+    if (text === 'About') {
+      onAboutClick();
+    }
+    if (text === 'Contact') {
+      onContactClick();
+    }
+    toggleDrawer(false);
   };
 
   const list = () => (
@@ -22,7 +32,7 @@ function NavBar() {
     >
       <List>
         {['Home', 'About', 'Contact'].map((text, index) => (
-          <ListItem button key={text} className="list-item">
+          <ListItem button key={text} className="list-item" onClick={() => handleLinkClick(text)}>
             <Link to={`/${text.toLowerCase()}`} style={{ textDecoration: 'none', color: 'inherit' }}>
               <ListItemText primary={text} />
             </Link>
