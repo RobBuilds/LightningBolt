@@ -40,7 +40,7 @@ const contributors = [
   {
     name: "Braden Walker",
     role: "Software Developer",
-    contribution: "Frontend Development",
+    contribution: "Frontend/Backend Development",
     github: "https://github.com/WalkerB20",
     linkedin: "https://linkedin.com/in/braden_walker",
     twitter: "https://twitter.com/WalkerB20",
