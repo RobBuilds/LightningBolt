@@ -11,19 +11,23 @@ function App() {
   const [contactOpen, setContactOpen] = useState(false);
   const navigate = useNavigate();
 
+  // When the About button is clicked, the AboutPage component is displayed
   const handleAboutOpen = () => {
     setAboutOpen(true);
   };
 
+  // When the AboutPage component is closed, the user is navigated back to the home page
   const handleAboutClose = () => {
     setAboutOpen(false);
     navigate('/');
   };
 
+  // When the Contact button is clicked, the ContactPage component is displayed
   const handleContactOpen = () => {
     setContactOpen(true);
   };
 
+  // When the ContactPage component is closed, the user is navigated back to the home page
   const handleContactClose = () => {
     setContactOpen(false);
     navigate('/');
@@ -32,7 +36,6 @@ function App() {
   return (
     <div className="App">
       <NavBar onAboutClick={handleAboutOpen} onContactClick={handleContactOpen} />
-
       <div className="app-container">
         <SearchComponent />
         <Routes>
@@ -40,7 +43,6 @@ function App() {
           <Route path="/about" element={<div />} />
         </Routes>
       </div>
-
       <AboutPage open={aboutOpen} handleClose={handleAboutClose} />
       <ContactPage open={contactOpen} onClose={handleContactClose} />
     </div>
