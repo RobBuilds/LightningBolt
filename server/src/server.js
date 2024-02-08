@@ -14,6 +14,7 @@ const spiderFootRoutes = require('./routes/spiderFootRoutes');
 function startServer() {
     const app = express();
     const PORT = process.env.PORT || 4000;
+    const knex = require('knex')(require('../knexfile.js')[process.env.NODE_ENV||'development']);
 
     // Middleware
     app.use(express.urlencoded({ extended: true }));
@@ -32,22 +33,22 @@ function startServer() {
     // Endpoint for processing URL content
     app.post("/api/url", async (req, res) => {
         const { url } = req.body;
-    
+
         const browser = await puppeteer.launch();
         const page = await browser.newPage();
         await page.goto(url);
-    
+
         const websiteContent = await page.evaluate(() => document.documentElement.innerText.trim());
         const websiteOgImage = await page.evaluate(() => {
             // Extraction logic for 'og:image' content, assuming it's implemented above
         });
-    
+
         try {
             // Direct call to the service function without passing the now-removed ChatGPTAPIBrowser
             let result = await chatGptService.analyzeContent(websiteContent);
             result.brandImage = websiteOgImage;
             result.id = Math.random().toString(36).substring(2, 10);
-    
+
             res.json({
                 message: "Request successful!",
                 result,
