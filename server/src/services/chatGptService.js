@@ -1,16 +1,29 @@
-const { ChatGPTAPI } = require('chatgpt'); 
 const puppeteer = require("puppeteer");
 const db = require('./databaseService');
 
+// Dynamically import the ChatGPT API
+let ChatGPTAPI, ChatGPTAPIBrowser;
+
+import('chatgpt')
+  .then(module => {
+      ChatGPTAPI = module.ChatGPTAPI; // Direct API
+      ChatGPTAPIBrowser = module.ChatGPTAPIBrowser; // Browser-based API, assuming it's exported by the same module
+  })
+  .catch(err => {
+      console.error('Failed to load the chatgpt module:', err);
+  });
+
 const chatGptService = {
     async analyzeContent(content, useBrowser = false) {
-        let analysisResult;
-
         if (useBrowser) {
+            // Ensure the ChatGPTAPIBrowser is loaded
+            if (!ChatGPTAPIBrowser) {
+                throw new Error('ChatGPTAPIBrowser module not loaded.');
+            }
+
             // Initialize and use the browser-based ChatGPT API
             const browser = await puppeteer.launch();
             const page = await browser.newPage();
-            const ChatGPTAPIBrowser = await import('chatgpt').then(module => module.ChatGPTAPIBrowser);
 
             const api = new ChatGPTAPIBrowser({
                 email: process.env.CHATGPT_EMAIL,
@@ -19,6 +32,7 @@ const chatGptService = {
 
             await api.initSession(page);
 
+            let analysisResult;
             try {
                 analysisResult = await api.analyze(content);
             } catch (error) {
@@ -27,12 +41,21 @@ const chatGptService = {
             } finally {
                 await browser.close();
             }
+
+            // Once you have the result, save it to the database before returning
+            return await this.saveAnalysisResults(analysisResult);
         } else {
+            // Ensure the ChatGPTAPI is loaded
+            if (!ChatGPTAPI) {
+                throw new Error('ChatGPTAPI module not loaded.');
+            }
+
             // Use the direct ChatGPT API
             const api = new ChatGPTAPI({
                 apiKey: process.env.OPENAI_API_KEY
             });
 
+            let analysisResult;
             try {
                 const res = await api.sendMessage(content);
                 analysisResult = res.text; // Assuming res.text contains the API response
@@ -40,10 +63,10 @@ const chatGptService = {
                 console.error('Error during content analysis with API:', error);
                 throw error;
             }
-        }
 
-        // Once you have the result, save it to the database before returning
-        return await this.saveAnalysisResults(analysisResult);
+            // Once you have the result, save it to the database before returning
+            return await this.saveAnalysisResults(analysisResult);
+        }
     },
 
     async saveAnalysisResults(results) {
