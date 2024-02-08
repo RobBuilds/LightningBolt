@@ -1,5 +1,5 @@
 # Use an official Node runtime as a parent image
-FROM node:14
+FROM node:latest
 
 # Set the working directory in the container
 WORKDIR /usr/src/app
@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Install any needed packages specified in package.json
-RUN npm install
+RUN npm install --legacy-peer-deps
 
 # Bundle app source inside the Docker image
 COPY . .
