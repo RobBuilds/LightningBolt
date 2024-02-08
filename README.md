@@ -35,7 +35,7 @@ cd LightningBolt
 
 3. Install the required dependencies:
 
-npm i --legacy-peer-deps express mui @mui/material @material-ui/core @material-ui/icons @mui/icons-material pg tailwind tailwindcss tailwindscss puppeteer react react-dom react-router-dom react-scripts knex chatgpt
+npm i --legacy-peer-deps express mui @mui/material @material-ui/core @material-ui/icons @mui/icons-material pg tailwind tailwindcss tailwindscss puppeteer react react-dom react-router-dom react-scripts knex chatgpt pg axios dotenv
 
 
 ## Usage
