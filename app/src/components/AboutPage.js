@@ -1,23 +1,35 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import React from 'react';
+import { makeStyles, Modal } from '@material-ui/core';
 import {
   Typography,
   Grid,
   List,
   ListItem,
   ListItemText,
-} from "@material-ui/core";
+  Backdrop,
+  Fade,
+} from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "100%",
+    width: '100%',
     maxWidth: 750,
     backgroundColor: theme.palette.background.paper,
-    margin: "auto",
+    margin: 'auto',
     padding: theme.spacing(3),
   },
   inline: {
-    display: "inline",
+    display: 'inline',
+  },
+  modal: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
   },
 }));
 
@@ -47,41 +59,56 @@ const aboutDetails = [
     title: "Contributors:",
     content: "Thank you to all who contributed to this project: Charles Sanders, Tyrelle Robinson, Tommy Daniel, Braden Walker. See our contact page for more info.",
   }
-  
+
 ];
 
-const AboutPage = () => {
+const AboutPage = ({ open, handleClose }) => {
   const classes = useStyles();
 
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12}>
-        <List className={classes.root}>
-          <Typography variant="h4" component="h1">
-            ABOUT LIGHTNINGBOLT:
-          </Typography>
-          {aboutDetails.map((detail, index) => (
-            <ListItem alignItems="flex-start" key={index}>
-              <ListItemText
-                primary={detail.title}
-                secondary={
-                  <React.Fragment>
-                    <Typography
-                      component="span"
-                      variant="body2"
-                      className={classes.inline}
-                      color="textPrimary"
-                    >
-                      {detail.content}
-                    </Typography>
-                  </React.Fragment>
-                }
-              />
-            </ListItem>
-          ))}
-        </List>
-      </Grid>
-    </Grid>
+    <Modal
+      open={open}
+      onClose={handleClose}
+      className={classes.modal}
+      closeAfterTransition
+      BackdropComponent={Backdrop}
+      BackdropProps={{
+        timeout: 500,
+      }}
+    >
+      <Fade in={open}>
+        <div className={classes.paper}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <List className={classes.root}>
+                <Typography variant="h4" component="h1">
+                  ABOUT LIGHTNINGBOLT:
+                </Typography>
+                {aboutDetails.map((detail, index) => (
+                  <ListItem alignItems="flex-start" key={index}>
+                    <ListItemText
+                      primary={detail.title}
+                      secondary={
+                        <React.Fragment>
+                          <Typography
+                            component="span"
+                            variant="body2"
+                            className={classes.inline}
+                            color="textPrimary"
+                          >
+                            {detail.content}
+                          </Typography>
+                        </React.Fragment>
+                      }
+                    />
+                  </ListItem>
+                ))}
+              </List>
+            </Grid>
+          </Grid>
+        </div>
+      </Fade>
+    </Modal>
   );
 };
 

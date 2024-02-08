@@ -9,6 +9,8 @@ import {
   Typography,
   Box,
   Grid,
+  Dialog,
+  DialogContent,
 } from "@material-ui/core";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
@@ -65,17 +67,19 @@ const contributors = [
   }
 ];
 
-const ContactPage = () => {
+const ContactPage = ({ open, onClose }) => {
   const classes = useStyles();
 
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12} sm={8}>
-        <List className={classes.root}>
-          <Typography variant="h4" component="h1">
-            CONTRIBUTORS:
-          </Typography>
-          {contributors.map((contributor, index) => (
+    <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
+      <DialogContent>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={8}>
+            <List className={classes.root}>
+              <Typography variant="h4" component="h1">
+                CONTRIBUTORS:
+              </Typography>
+              {contributors.map((contributor, index) => (
             <ListItem alignItems="flex-start" key={contributor.github}>
               <ListItemAvatar>
                 <Avatar
@@ -154,12 +158,14 @@ const ContactPage = () => {
                 }
               />
             </ListItem>
-          ))}
-        </List>
-      </Grid>
-      <Grid item xs={12} sm={4}>
-      </Grid>
-    </Grid>
+            ))}
+            </List>
+          </Grid>
+          <Grid item xs={12} sm={4}>
+          </Grid>
+        </Grid>
+      </DialogContent>
+    </Dialog>
   );
 };
 
