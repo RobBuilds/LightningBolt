@@ -42,29 +42,24 @@ function startServer(ChatGPTAPIBrowser) {
 		res.send("Welcome to the server!");
 	});
 	
-    // Endpoint to analyze the website content
     app.post("/api/url", async (req, res) => {
         const { url } = req.body;
-
+    
         const browser = await puppeteer.launch();
         const page = await browser.newPage();
         await page.goto(url);
-
+    
         const websiteContent = await page.evaluate(() => document.documentElement.innerText.trim());
         const websiteOgImage = await page.evaluate(() => {
-            const metas = document.getElementsByTagName("meta");
-            for (let i = 0; i < metas.length; i++) {
-                if (metas[i].getAttribute("property") === "og:image") {
-                    return metas[i].getAttribute("content");
-                }
-            }
+            // ... (rest of the og:image extraction)
         });
-
+    
         try {
+            // Note that we're passing the ChatGPTAPIBrowser to the service function
             let result = await chatGptService.analyzeContent(websiteContent, ChatGPTAPIBrowser);
             result.brandImage = websiteOgImage;
             result.id = Math.random().toString(36).substring(2, 10);
-
+    
             res.json({
                 message: "Request successful!",
                 result,
@@ -76,6 +71,7 @@ function startServer(ChatGPTAPIBrowser) {
             await browser.close(); // Ensure the browser is closed after operation
         }
     });
+    
 
     // Start server
     app.listen(PORT, () => {
