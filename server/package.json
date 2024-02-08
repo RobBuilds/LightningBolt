@@ -14,7 +14,10 @@
     "uuid": "^8.3.2"
   },
   "scripts": {
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "migrate": "knex migrate:latest",
+    "rollback": "knex migrate:rollback",
+    "seed": "knex seed:run"
   },
   "engines": {
     "node": ">=14.0.0"
