@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Search.css';
+import '../styles/App.css';
 import { Button, TextField, Switch, makeStyles, ThemeProvider } from '@material-ui/core';
 import { purple } from '@material-ui/core/colors';
 import { createTheme } from '@material-ui/core/styles';
@@ -91,9 +92,9 @@ function SearchComponent() {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '0px'}}>
       <ThemeProvider theme={theme}>
-        <div className="container">
+        <div className="container" style={{ margin: '0', padding: '0' }}>
           <div className="switch-container">
             <Switch checked={method} onChange={handleToggle} color="primary" />
             <TextField
@@ -108,11 +109,11 @@ function SearchComponent() {
             <Button variant="contained" className={`${classes.button} bg-gray-300 text-black`} onClick={() => window.location.href = 'http://localhost:5001'}>Spiderfoot</Button>
             <Button variant="contained" className={`${classes.button} bg-gray-300 text-black ${showData ? classes.activeButton : ''}`} onClick={handleDatabaseClick}>Database</Button>
           </div>
+          <div style={{ width: '100%', display: 'fixed', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', overflow: 'auto', maxHeight: '500px', paddingTop: '10px'}}>
+            {showData && <DataTable className="dataTable" data={filteredData} />}
+          </div>
         </div>
       </ThemeProvider>
-      <div style={{ marginTop: '-400px', width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', overflow: 'auto', maxHeight: '500px' }}>
-      {showData && <DataTable className="dataTable" data={filteredData} />}
-      </div>
     </div>
   );
 }
