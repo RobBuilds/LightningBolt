@@ -35,9 +35,12 @@ function App() {
 
   return (
     <div className="App">
-      <NavBar onAboutClick={handleAboutOpen} onContactClick={handleContactOpen} />
+<div style={{ position: 'fixed', width: '100%', height: '100%' }}>
+  <NavBar onAboutClick={handleAboutOpen} onContactClick={handleContactOpen} />
+  <SearchComponent />
+</div>
       <div className="app-container">
-        <SearchComponent />
+
         <Routes>
           <Route path="/contact" element={<div />} />
           <Route path="/about" element={<div />} />
