@@ -1,4 +1,5 @@
 const spiderFootService = require('../services/spiderFootService');
+const db = require('../services/databaseService');
 
 const spiderFootController = {
     async analyzeDomain(req, res) {

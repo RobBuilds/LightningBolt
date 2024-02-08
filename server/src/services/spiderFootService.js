@@ -1,4 +1,5 @@
 const axios = require('axios');
+const db = require('./databaseService');
 
 const spiderFootService = {
     async analyzeDomain(domain) {
