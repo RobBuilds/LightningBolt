@@ -1,11 +1,10 @@
 const chatGptService = require('../services/chatGptService');
-const db = require('../services/databaseService');
 
 const chatGptController = {
     async analyzeContent(req, res) {
         try {
-            const { content } = req.body;
-            const result = await chatGptService.analyzeContent(content);
+            const { content, useBrowser = false } = req.body; // Extract useBrowser flag from request body, defaulting to false
+            const result = await chatGptService.analyzeContent(content, useBrowser); // Pass the useBrowser flag to the service method
             res.json(result);
         } catch (error) {
             res.status(500).send({ message: "Error processing your request", error: error.toString() });
