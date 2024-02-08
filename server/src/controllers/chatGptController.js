@@ -1,4 +1,5 @@
 const chatGptService = require('../services/chatGptService');
+const db = require('../services/databaseService');
 
 const chatGptController = {
     async analyzeContent(req, res) {
