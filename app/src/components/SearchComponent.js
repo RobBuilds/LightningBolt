@@ -1,13 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/Search.css';
 import { Button, TextField, Switch, makeStyles, ThemeProvider } from '@material-ui/core';
 import { purple } from '@material-ui/core/colors';
 import { createTheme } from '@material-ui/core/styles';
-import {useNavigate} from 'react-router-dom'
+import DataTable from './DataTable';
 
-/*  ------------------ SearchComponent -----------------------
-    This is a SearchComponent that uses Material-UI components.
-    ----------------------------------------------------------  */
 const useStyles = makeStyles({
   root: {
     '& .MuiOutlinedInput-root': {
@@ -34,53 +31,89 @@ const useStyles = makeStyles({
       backgroundColor: 'purple',
     },
   },
+  activeButton: {
+    backgroundColor: 'purple',
+  },
 });
 
-/* ------------------ Toggle Switch -------------------------
-                MUI THEME for the Toggle Switch
-   ----------------------------------------------------------  */
 const theme = createTheme({
   palette: {
     primary: purple,
   },
 });
 
-/*  ------------------ SearchComponent -----------------------
-        This is the Main function for the SearchComponent.
-    ----------------------------------------------------------  */
 function SearchComponent() {
   const classes = useStyles();
-  const [method, setMethod] = React.useState(false);
-  const navigate = useNavigate();
+  const [method, setMethod] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [data, setData] = useState([]);
+  const [showData, setShowData] = useState(false);
+  const [filteredData, setFilteredData] = useState([]);
+
   const handleToggle = () => {
-    setMethod(!method);
+    const newMethod = !method;
+    setMethod(newMethod);
+
+    if (newMethod) {
+      // Perform web search with searchTerm
+    } else {
+      const filteredData = data.filter(item =>
+        item.url.includes(searchTerm) || item.status.includes(searchTerm)
+      );
+      setData(filteredData);
+    }
   };
 
-/*  ------------------ SearchComponent HTML -----------------------
-                  This is the main HTML for the page
-    ---------------------------------------------------------------  */
+  useEffect(() => {
+    if (method) {
+      const newFilteredData = data.filter(item =>
+        Object.values(item).some(value =>
+          value.toString().includes(searchTerm)
+        )
+      );
+      setFilteredData(newFilteredData);
+    } else {
+      setFilteredData(data);
+    }
+  }, [searchTerm, data, method]);
+
+  const handleDatabaseClick = () => {
+    const databaseData = [
+      { id: 1, url: 'http://example.com', status: '200 OK', responseTime: 120 },
+      { id: 2, url: 'http://example2.com', status: '404 Not Found', responseTime: 200 },
+    ];
+    setData(databaseData);
+    setShowData(prevShowData => !prevShowData);
+  };
+
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
   return (
-    // ThemeProvider
-    <ThemeProvider theme={theme}>
-      <div className="container">
-        <div className="switch-container">
-          {/* MUI Switch */}
-          <Switch checked={method} onChange={handleToggle} color="primary" />
-          {/* Textfield for Searchbar */}
-          <TextField
-            label="Web Search"
-            variant="outlined"
-            className={`search-bar ${classes.root}`}
-          />
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <ThemeProvider theme={theme}>
+        <div className="container">
+          <div className="switch-container">
+            <Switch checked={method} onChange={handleToggle} color="primary" />
+            <TextField
+              label={method ? "Database Search" : "Web Search"}
+              variant="outlined"
+              className={`search-bar ${classes.root}`}
+              onChange={handleSearchChange}
+            />
+          </div>
+          <div className="buttons-container">
+            <Button variant="contained" className={`${classes.button} bg-gray-300 text-black`}>Web Search</Button>
+            <Button variant="contained" className={`${classes.button} bg-gray-300 text-black`} onClick={() => window.location.href = 'http://localhost:5001'}>Spiderfoot</Button>
+            <Button variant="contained" className={`${classes.button} bg-gray-300 text-black ${showData ? classes.activeButton : ''}`} onClick={handleDatabaseClick}>Database</Button>
+          </div>
         </div>
-        {/* MUI Buttons */}
-        <div className="buttons-container">
-          <Button variant="contained" className={`${classes.button} bg-gray-300 text-black`}>Web Search</Button>
-          <Button variant="contained" className={`${classes.button} bg-gray-300 text-black`} onClick={() => window.location.href = 'http://localhost:5001'}>Spiderfoot</Button>
-          <Button variant="contained" className={`${classes.button} bg-gray-300 text-black`}>Database</Button>
-        </div>
+      </ThemeProvider>
+      <div style={{ marginTop: '-400px', width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', overflow: 'auto', maxHeight: '500px' }}>
+      {showData && <DataTable className="dataTable" data={filteredData} />}
       </div>
-    </ThemeProvider>
+    </div>
   );
 }
 
