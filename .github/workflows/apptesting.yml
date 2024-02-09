@@ -22,7 +22,7 @@ jobs:
       matrix:
         # Here we specify which versions of Node.js we want our tests to run on.
         # You can specify as many versions as you want.
-        node-version: [16.x, 20.x]  # This can change depending on your environment
+        node-version: [16.x, 20.x, 21.x]  # This can change depending on your environment
 
     steps:
     # This step checks out a copy of your repository

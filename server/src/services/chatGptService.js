@@ -22,7 +22,15 @@ const chatGptService = {
             }
 
             // Initialize and use the browser-based ChatGPT API
-            const browser = await puppeteer.launch();
+            const browser = await puppeteer.launch({
+                executablePath: '/usr/bin/google-chrome',
+                args: [
+                    '--disable-gpu',
+                    '--disable-dev-shm-usage',
+                    '--disable-setuid-sandbox',
+                    '--no-sandbox',
+                ],
+            });
             const page = await browser.newPage();
 
             const api = new ChatGPTAPIBrowser({
