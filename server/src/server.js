@@ -34,15 +34,7 @@ function startServer() {
     app.post("/api/url", async (req, res) => {
         const { url } = req.body;
 
-        const browser = await puppeteer.launch({
-            executablePath: '/usr/bin/google-chrome',
-            args: [
-                '--disable-gpu',
-                '--disable-dev-shm-usage',
-                '--disable-setuid-sandbox',
-                '--no-sandbox',
-            ],
-        });
+        const browser = await puppeteer.launch();
         const page = await browser.newPage();
         await page.goto(url);
 
