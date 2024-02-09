@@ -40,7 +40,6 @@ function App() {
   <SearchComponent />
 </div>
       <div className="app-container">
-
         <Routes>
           <Route path="/contact" element={<div />} />
           <Route path="/about" element={<div />} />
