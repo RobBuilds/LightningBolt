@@ -11,7 +11,7 @@ const chatGptService = require('./services/chatGptService');
 const chatGptRoutes = require('./routes/chatGptRoutes');
 const spiderFootRoutes = require('./routes/spiderFootRoutes');
 
-function startServer() {
+async function startServer() {
     const app = express();
     const PORT = process.env.PORT || 4000;
     const knex = require('knex')(require('../knexfile.js')[process.env.NODE_ENV||'development']);
@@ -77,3 +77,4 @@ function startServer() {
 
 // Execute the server startup function
 startServer();
+
