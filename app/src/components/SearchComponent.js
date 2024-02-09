@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Button, TextField, Switch, makeStyles, ThemeProvider, createTheme } from '@material-ui/core';
+import { Paper, Typography, Button, TextField, Switch, makeStyles, ThemeProvider, createTheme } from '@material-ui/core';
 import { purple } from '@material-ui/core/colors';
 import DataTable from './DataTable';
 import CSVUploadComponent from './CSVUploadComponent'; // Import the CSV upload component
 import '../styles/fonts.css';
+import axios from 'axios';
 
 const useStyles = makeStyles({
   root: {
@@ -52,6 +53,20 @@ function SearchComponent() {
   const [data, setData] = useState([]);
   const [showData, setShowData] = useState(false);
   const [filteredData, setFilteredData] = useState([]);
+  const [searchResults, setSearchResults] = useState(null);
+  const [searchButtonPressed, setSearchButtonPressed] = useState(false);
+
+  const handleWebSearch = async () => {
+    setSearchButtonPressed(true);
+
+    const response = await axios.get('/api/url', {
+      params: {
+        q: searchTerm
+      }
+    });
+
+    setSearchResults(response.data);
+  };
 
   // Function to handle the processed CSV data
   const handleCSVData = (csvData) => {
@@ -68,7 +83,6 @@ function SearchComponent() {
     setData(formattedData); // Update the state with the formatted data
     setShowData(true); // Set the flag to show the data table
   };
-
 
   const handleToggle = () => {
     setMethod(!method);
@@ -116,13 +130,20 @@ function SearchComponent() {
             />
           </div>
           <div className="buttons-container">
-            <Button variant="contained" className={`${classes.button} bg-gray-300 text-black`}>Web Search</Button>
+            <Button variant="contained" className={`${classes.button} bg-gray-300 text-black`} onClick={handleWebSearch}>Web Search</Button>
             <Button variant="contained" className={`${classes.button} bg-gray-300 text-black`} onClick={() => window.location.href = 'http://localhost:5001'}>Spiderfoot</Button>
             <Button variant="contained" className={`${classes.button} bg-gray-300 text-black ${showData ? classes.activeButton : ''}`} onClick={() => setShowData(prevShowData => !prevShowData)}>Database</Button>
             <CSVUploadComponent onDataProcessed={handleCSVData} />
           </div>
           <div style={{ width: '100%', display: 'fixed', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', overflow: 'auto', maxHeight: '500px', paddingTop: '10px'}}>
             {showData && <DataTable data={filteredData} />}
+            {searchButtonPressed && (
+              <Paper style={{ padding: '20px', marginTop: '20px' }}>
+                <Typography variant="body1">
+                  {searchResults || "No results found"}
+                </Typography>
+              </Paper>
+            )}
           </div>
         </div>
       </ThemeProvider>
