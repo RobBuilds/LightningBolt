@@ -52,31 +52,31 @@ function SearchComponent() {
   const [filteredData, setFilteredData] = useState([]);
 
   const handleToggle = () => {
-    const newMethod = !method;
-    setMethod(newMethod);
-
-    if (newMethod) {
-      // Perform web search with searchTerm
-    } else {
-      const filteredData = data.filter(item =>
-        item.url.includes(searchTerm) || item.status.includes(searchTerm)
-      );
-      setData(filteredData);
-    }
+    setMethod(!method);
   };
 
   useEffect(() => {
     if (method) {
+      const isExactSearch = searchTerm.startsWith('"') && searchTerm.endsWith('"');
+      let searchQuery = searchTerm;
+      if (isExactSearch) {
+        searchQuery = searchTerm.slice(1, -1);
+      } else {
+        searchQuery = searchTerm.replace(/\s+/g, '');
+      }
       const newFilteredData = data.filter(item =>
-        Object.values(item).some(value =>
-          value.toString().includes(searchTerm)
-        )
+        Object.values(item).some(value => {
+          const stringValue = isExactSearch ? value.toString().toLowerCase() : value.toString().replace(/\s+/g, '').toLowerCase();
+          const queryValue = searchQuery.toLowerCase();
+          return isExactSearch ? stringValue.includes(queryValue) : stringValue.includes(queryValue);
+        })
       );
       setFilteredData(newFilteredData);
     } else {
       setFilteredData(data);
     }
   }, [searchTerm, data, method]);
+
 
   const handleDatabaseClick = () => {
     const databaseData = [
@@ -108,9 +108,10 @@ function SearchComponent() {
             <Button variant="contained" className={`${classes.button} bg-gray-300 text-black`}>Web Search</Button>
             <Button variant="contained" className={`${classes.button} bg-gray-300 text-black`} onClick={() => window.location.href = 'http://localhost:5001'}>Spiderfoot</Button>
             <Button variant="contained" className={`${classes.button} bg-gray-300 text-black ${showData ? classes.activeButton : ''}`} onClick={handleDatabaseClick}>Database</Button>
+            <Button variant="contained" className={`${classes.button} bg-gray-300 text-black`}>CSV Upload</Button>
           </div>
           <div style={{ width: '100%', display: 'fixed', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', overflow: 'auto', maxHeight: '500px', paddingTop: '10px'}}>
-            {showData && <DataTable className="dataTable" data={filteredData} />}
+            {showData && <DataTable data={filteredData} />}
           </div>
         </div>
       </ThemeProvider>
