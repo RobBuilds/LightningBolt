@@ -6,12 +6,13 @@ dotenv.config();
 
 // Import services
 const chatGptService = require('./services/chatGptService');
+const browser = await puppeteer.launch({ executablePath: '/usr/bin/google-chrome' });
 
 // Import routes - ensure these are adapted to your setup
 const chatGptRoutes = require('./routes/chatGptRoutes');
 const spiderFootRoutes = require('./routes/spiderFootRoutes');
 
-async function startServer() {
+function startServer() {
     const app = express();
     const PORT = process.env.PORT || 4000;
     const knex = require('knex')(require('../knexfile.js')[process.env.NODE_ENV||'development']);
@@ -34,7 +35,15 @@ async function startServer() {
     app.post("/api/url", async (req, res) => {
         const { url } = req.body;
 
-        const browser = await puppeteer.launch();
+        const browser = await puppeteer.launch({
+            executablePath: '/usr/bin/google-chrome',
+            args: [
+                '--disable-gpu',
+                '--disable-dev-shm-usage',
+                '--disable-setuid-sandbox',
+                '--no-sandbox',
+            ],
+        });
         const page = await browser.newPage();
         await page.goto(url);
 
@@ -69,4 +78,3 @@ async function startServer() {
 
 // Execute the server startup function
 startServer();
-
