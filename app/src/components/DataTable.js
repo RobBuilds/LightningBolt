@@ -2,7 +2,8 @@ import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import '../styles/DataGrid.css';
 
-function DataTable() {
+// Adjust the DataTable component to accept data as a prop
+function DataTable({ data }) {
   const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
     { field: 'url', headerName: 'URL', width: 200 },
@@ -10,17 +11,11 @@ function DataTable() {
     { field: 'responseTime', headerName: 'Response Time', type: 'number', width: 130 },
   ];
 
-  const rows = [
-    { id: 1, url: 'http://example.com', status: '200 OK', responseTime: 120 },
-    { id: 2, url: 'http://example2.com', status: '404 Not Found', responseTime: 200 },
-    // Add more rows as needed
-  ];
-
   return (
     <div style={{ height: 400, width: '100%' }}>
       <DataGrid
         className="dataGrid"
-        rows={rows}
+        rows={data}
         columns={columns}
         pageSize={5}
         rowsPerPageOptions={[5]}
