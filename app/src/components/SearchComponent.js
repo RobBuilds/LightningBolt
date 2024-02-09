@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Paper, Typography, Button, TextField, Switch, makeStyles, ThemeProvider, createTheme } from '@material-ui/core';
 import { purple } from '@material-ui/core/colors';
 import DataTable from './DataTable';
-import CSVUploadComponent from './CSVUploadComponent'; // Import the CSV upload component
+import CSVUploadComponent from './CSVUploadComponent';
 import '../styles/fonts.css';
 import axios from 'axios';
 
@@ -59,10 +59,8 @@ function SearchComponent() {
   const handleWebSearch = async () => {
     setSearchButtonPressed(true);
 
-    const response = await axios.get('/api/url', {
-      params: {
-        q: searchTerm
-      }
+    const response = await axios.post('http://localhost:4000/api/url', {
+      url: searchTerm
     });
 
     setSearchResults(response.data);
