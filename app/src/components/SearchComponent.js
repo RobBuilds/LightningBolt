@@ -20,12 +20,15 @@ const useStyles = makeStyles({
     '& .MuiOutlinedInput-input': {
       color: 'black',
       backgroundColor: 'white',
+      width: '900px',
     },
   },
   input: {
     width: '300px',
   },
   button: {
+    marginTop: '10px',
+    margin: '5px',
     '&:active': {
       backgroundColor: 'purple',
     },
@@ -113,7 +116,6 @@ function SearchComponent() {
             <Button variant="contained" className={`${classes.button} bg-gray-300 text-black`}>Web Search</Button>
             <Button variant="contained" className={`${classes.button} bg-gray-300 text-black`} onClick={() => window.location.href = 'http://localhost:5001'}>Spiderfoot</Button>
             <Button variant="contained" className={`${classes.button} bg-gray-300 text-black ${showData ? classes.activeButton : ''}`} onClick={() => setShowData(prevShowData => !prevShowData)}>Database</Button>
-            {/* CSV Upload Button is now replaced by the CSVUploadComponent */}
             <CSVUploadComponent onDataProcessed={handleCSVData} />
           </div>
           <div style={{ width: '100%', display: 'fixed', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', overflow: 'auto', maxHeight: '500px', paddingTop: '10px'}}>
