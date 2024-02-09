@@ -7,19 +7,24 @@ WORKDIR /usr/src/app
 # Copy package.json and package-lock.json (if available)
 COPY package*.json ./
 
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
-
 # Install any dependencies
 RUN apt update
 RUN apt-get update && apt-get install net-tools
 RUN npm install --legacy-peer-deps
-RUN npx puppeteer browsers install chrome
 RUN apt-get install libnss3 -y
 RUN apt-get install libgbm1 -y
 RUN apt-get install libasound2 -y
 RUN apt-get install -y wget
-RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-RUN apt-get install -y ./google-chrome-stable_current_amd64.deb
+RUN apt-get update \
+    && apt-get install -y wget gnupg \
+    && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
+    && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' \
+    && apt-get update \
+    && apt-get install -y google-chrome-stable fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf libxss1 \
+      --no-install-recommends \
+    && rm -rf /var/lib/apt/lists/*
+RUN npm init -y &&  \
+    npm i puppeteer
 
 # Bundle app source inside Docker image
 COPY . .

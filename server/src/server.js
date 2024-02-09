@@ -6,8 +6,9 @@ dotenv.config();
 
 // Import services
 const chatGptService = require('./services/chatGptService');
-const browser = await puppeteer.launch({ executablePath: '/usr/bin/google-chrome' });
-
+const browser = async function puppeteerLaunch() {
+    await puppeteer.launch({ executablePath: '/usr/bin/google-chrome' });
+};
 // Import routes - ensure these are adapted to your setup
 const chatGptRoutes = require('./routes/chatGptRoutes');
 const spiderFootRoutes = require('./routes/spiderFootRoutes');
@@ -34,6 +35,16 @@ function startServer() {
     // Endpoint for processing URL content
     app.post("/api/url", async (req, res) => {
         const { url } = req.body;
+
+        if (!url) {
+            return res.status(400).send({ message: 'URL is required' });
+        }
+    
+        // Check if url is valid
+        const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
+        if (!urlRegex.test(url)) {
+            return res.status(400).send({ message: 'Invalid URL' });
+        }
 
         const browser = await puppeteer.launch({
             executablePath: '/usr/bin/google-chrome',

@@ -6,6 +6,7 @@ import CSVUploadComponent from './CSVUploadComponent';
 import '../styles/fonts.css';
 import axios from 'axios';
 
+
 const useStyles = makeStyles({
   root: {
     '& .MuiOutlinedInput-root': {
@@ -57,6 +58,7 @@ function SearchComponent() {
   const [searchButtonPressed, setSearchButtonPressed] = useState(false);
 
   const handleWebSearch = async () => {
+    try {
     setSearchButtonPressed(true);
 
     const response = await axios.post('http://localhost:4000/api/url', {
@@ -64,8 +66,10 @@ function SearchComponent() {
     });
 
     setSearchResults(response.data);
-  };
-
+  } catch (error) {
+    console.error(`Error making POST request: ${error}`);
+  }
+  }
   // Function to handle the processed CSV data
   const handleCSVData = (csvData) => {
     // Convert parsed CSV (array of objects) to the expected object format
@@ -133,16 +137,22 @@ function SearchComponent() {
             <Button variant="contained" className={`${classes.button} bg-gray-300 text-black ${showData ? classes.activeButton : ''}`} onClick={() => setShowData(prevShowData => !prevShowData)}>Database</Button>
             <CSVUploadComponent onDataProcessed={handleCSVData} />
           </div>
-          <div style={{ width: '100%', display: 'fixed', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', overflow: 'auto', maxHeight: '500px', paddingTop: '10px'}}>
-            {showData && <DataTable data={filteredData} />}
-            {searchButtonPressed && (
-              <Paper style={{ padding: '20px', marginTop: '20px' }}>
-                <Typography variant="body1">
-                  {searchResults || "No results found"}
-                </Typography>
-              </Paper>
-            )}
-          </div>
+          <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', overflow: 'auto', maxHeight: '500px', paddingTop: '10px'}}>
+  {showData && <DataTable data={filteredData} />}
+  {searchButtonPressed && (
+    <Paper style={{ padding: '20px', marginTop: '20px' }}>
+      {searchResults && searchResults.result && searchResults.result.rows && searchResults.result.rows.length > 0 ? (
+        searchResults.result.rows.map((row, index) => (
+          <Typography key={index} variant="body1" style={{ whiteSpace: 'pre-wrap' }}>
+            {row.data}
+          </Typography>
+        ))
+      ) : (
+        <Typography variant="body1">No results found</Typography>
+      )}
+    </Paper>
+  )}
+</div>
         </div>
       </ThemeProvider>
     </div>
