@@ -3,6 +3,7 @@ import { Button, TextField, Switch, makeStyles, ThemeProvider, createTheme } fro
 import { purple } from '@material-ui/core/colors';
 import DataTable from './DataTable';
 import CSVUploadComponent from './CSVUploadComponent'; // Import the CSV upload component
+import '../styles/fonts.css';
 
 const useStyles = makeStyles({
   root: {
@@ -103,6 +104,8 @@ function SearchComponent() {
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '0px'}}>
       <ThemeProvider theme={theme}>
         <div className="container" style={{ margin: '0', padding: '0' }}>
+          <h1 className="import" style={{ color: 'purple'}}>LIGHTNINGBOLT</h1>
+          <p style={{ color: 'white'}}>Webcrawler</p>
           <div className="switch-container">
             <Switch checked={method} onChange={handleToggle} color="primary" />
             <TextField

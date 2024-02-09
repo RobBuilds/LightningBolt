@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Protest+Revolution&display=swap');
+
+@keyframes pulse {
+  0% {
+    text-shadow: 0 0 5px rgb(255, 255, 251),
+                 0 0 10px rgb(255, 255, 251),
+                 0 0 15px rgb(255, 255, 251),
+                 0 0 20px rgb(255, 255, 251);
+  }
+  50% {
+    text-shadow: none;
+  }
+  100% {
+    text-shadow: 0 0 5px rgb(255, 255, 251),
+                 0 0 10px rgb(255, 255, 251),
+                 0 0 15px rgb(255, 255, 251),
+                 0 0 20px rgb(255, 255, 251);
+  }
+}
+
+h1 {
+  font-family: 'Protest Revolution', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  animation: pulse 15s infinite;
+}
