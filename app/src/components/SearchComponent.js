@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/Search.css';
-import '../styles/App.css';
-import { Button, TextField, Switch, makeStyles, ThemeProvider } from '@material-ui/core';
+import { Button, TextField, Switch, makeStyles, ThemeProvider, createTheme } from '@material-ui/core';
 import { purple } from '@material-ui/core/colors';
-import { createTheme } from '@material-ui/core/styles';
 import DataTable from './DataTable';
+import CSVUploadComponent from './CSVUploadComponent'; // Import the CSV upload component
 
 const useStyles = makeStyles({
   root: {
@@ -51,6 +49,23 @@ function SearchComponent() {
   const [showData, setShowData] = useState(false);
   const [filteredData, setFilteredData] = useState([]);
 
+  // Function to handle the processed CSV data
+  const handleCSVData = (csvData) => {
+    // Convert parsed CSV (array of objects) to the expected object format
+    const formattedData = csvData.map((item, index) => ({
+      id: index + 1, // Assigning a unique ID
+      scanName: item['Scan Name'], // Make sure the keys match the CSV header names
+      type: item['Type'],
+      module: item['Module'],
+      source: item['Source'],
+      'f/p': item['F/P'], // If F/P is a column name in your CSV, ensure it's written exactly as in the CSV
+      data: item['Data'], // Same as above, ensure it matches the CSV header name
+    }));
+    setData(formattedData); // Update the state with the formatted data
+    setShowData(true); // Set the flag to show the data table
+  };
+
+
   const handleToggle = () => {
     setMethod(!method);
   };
@@ -77,16 +92,6 @@ function SearchComponent() {
     }
   }, [searchTerm, data, method]);
 
-
-  const handleDatabaseClick = () => {
-    const databaseData = [
-      { id: 1, url: 'http://example.com', status: '200 OK', responseTime: 120 },
-      { id: 2, url: 'http://example2.com', status: '404 Not Found', responseTime: 200 },
-    ];
-    setData(databaseData);
-    setShowData(prevShowData => !prevShowData);
-  };
-
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
@@ -107,8 +112,9 @@ function SearchComponent() {
           <div className="buttons-container">
             <Button variant="contained" className={`${classes.button} bg-gray-300 text-black`}>Web Search</Button>
             <Button variant="contained" className={`${classes.button} bg-gray-300 text-black`} onClick={() => window.location.href = 'http://localhost:5001'}>Spiderfoot</Button>
-            <Button variant="contained" className={`${classes.button} bg-gray-300 text-black ${showData ? classes.activeButton : ''}`} onClick={handleDatabaseClick}>Database</Button>
-            <Button variant="contained" className={`${classes.button} bg-gray-300 text-black`}>CSV Upload</Button>
+            <Button variant="contained" className={`${classes.button} bg-gray-300 text-black ${showData ? classes.activeButton : ''}`} onClick={() => setShowData(prevShowData => !prevShowData)}>Database</Button>
+            {/* CSV Upload Button is now replaced by the CSVUploadComponent */}
+            <CSVUploadComponent onDataProcessed={handleCSVData} />
           </div>
           <div style={{ width: '100%', display: 'fixed', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', overflow: 'auto', maxHeight: '500px', paddingTop: '10px'}}>
             {showData && <DataTable data={filteredData} />}
