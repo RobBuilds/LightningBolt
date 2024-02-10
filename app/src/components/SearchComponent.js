@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Button, TextField, Switch, makeStyles, ThemeProvider, createTheme } from '@material-ui/core';
+import { Paper, Typography, Button, TextField, Switch, makeStyles, ThemeProvider, createTheme } from '@material-ui/core';
 import { purple } from '@material-ui/core/colors';
 import DataTable from './DataTable';
-import CSVUploadComponent from './CSVUploadComponent'; // Import the CSV upload component
+import CSVUploadComponent from './CSVUploadComponent';
 import '../styles/fonts.css';
+import axios from 'axios';
 
 const useStyles = makeStyles({
   root: {
@@ -52,6 +53,29 @@ function SearchComponent() {
   const [data, setData] = useState([]);
   const [showData, setShowData] = useState(false);
   const [filteredData, setFilteredData] = useState([]);
+  const [searchResults, setSearchResults] = useState(null);
+  const [searchButtonPressed, setSearchButtonPressed] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+
+  const handleWebSearch = async () => {
+    setIsLoading(true);
+    setSearchButtonPressed(true);
+    try {
+      const response = await axios.post('http://localhost:4000/api/url', {
+        url: searchTerm
+      });
+
+      setSearchResults({
+        data: response.data.result.rows[0].data,
+        created_at: response.data.result.rows[0].created_at,
+        updated_at: response.data.result.rows[0].updated_at
+      });
+    } catch (error) {
+      console.error(`Error making POST request: ${error}`);
+    }
+    setIsLoading(false);
+  }
 
   // Function to handle the processed CSV data
   const handleCSVData = (csvData) => {
@@ -68,7 +92,6 @@ function SearchComponent() {
     setData(formattedData); // Update the state with the formatted data
     setShowData(true); // Set the flag to show the data table
   };
-
 
   const handleToggle = () => {
     setMethod(!method);
@@ -116,7 +139,7 @@ function SearchComponent() {
             />
           </div>
           <div className="buttons-container">
-            <Button variant="contained" className={`${classes.button} bg-gray-300 text-black`}>Web Search</Button>
+            <Button variant="contained" className={`${classes.button} bg-gray-300 text-black`} onClick={handleWebSearch}>Web Search</Button>
             <Button variant="contained" className={`${classes.button} bg-gray-300 text-black`} onClick={() => window.location.href = 'http://localhost:5001'}>Spiderfoot</Button>
             <Button variant="contained" className={`${classes.button} bg-gray-300 text-black ${showData ? classes.activeButton : ''}`} onClick={() => setShowData(prevShowData => !prevShowData)}>Database</Button>
             <CSVUploadComponent onDataProcessed={handleCSVData} />
@@ -124,7 +147,21 @@ function SearchComponent() {
           <div style={{ width: '100%', display: 'fixed', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', overflow: 'auto', maxHeight: '500px', paddingTop: '10px'}}>
             {showData && <DataTable data={filteredData} />}
           </div>
-        </div>
+          <div style={{ width: '100%', display: 'fixed', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', overflow: 'auto', maxHeight: '500px', paddingTop: '10px'}}>
+          {searchButtonPressed && (
+              <Paper style={{ padding: '20px', marginTop: '20px', width: '100%' }}>
+                <Typography variant="body1" style={{ wordWrap: 'break-word' }}>
+                  {isLoading ? "Loading..." : searchButtonPressed && searchResults.data}
+                </Typography>
+                  {searchButtonPressed && !isLoading && (
+                <Typography variant="body2">
+                  Created At: {searchResults.created_at}, Updated At: {searchResults.updated_at}
+                </Typography>
+              )}
+            </Paper>
+            )}
+            </div>
+            </div>
       </ThemeProvider>
     </div>
   );
