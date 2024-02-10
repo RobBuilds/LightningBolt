@@ -144,10 +144,10 @@ function SearchComponent() {
             <Button variant="contained" className={`${classes.button} bg-gray-300 text-black ${showData ? classes.activeButton : ''}`} onClick={() => setShowData(prevShowData => !prevShowData)}>Database</Button>
             <CSVUploadComponent onDataProcessed={handleCSVData} />
           </div>
-          <div style={{ width: '100%', display: 'fixed', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', overflow: 'auto', maxHeight: '500px', paddingTop: '10px'}}>
+          <div style={{ maxWidth: '1000px', display: 'fixed', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', overflow: 'auto', maxHeight: '500px', paddingTop: '10px'}}>
             {showData && <DataTable data={filteredData} />}
           </div>
-          <div style={{ width: '100%', display: 'fixed', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', overflow: 'auto', maxHeight: '500px', paddingTop: '10px'}}>
+          <div style={{ maxWidth: '1000px', display: 'fixed', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', overflow: 'auto', maxHeight: '500px', paddingTop: '10px'}}>
           {searchButtonPressed && (
               <Paper style={{ padding: '20px', marginTop: '20px', width: '100%' }}>
                 <Typography variant="body1" style={{ wordWrap: 'break-word' }}>
