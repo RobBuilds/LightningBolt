@@ -6,7 +6,6 @@ import CSVUploadComponent from './CSVUploadComponent';
 import '../styles/fonts.css';
 import axios from 'axios';
 
-
 const useStyles = makeStyles({
   root: {
     '& .MuiOutlinedInput-root': {
@@ -56,20 +55,28 @@ function SearchComponent() {
   const [filteredData, setFilteredData] = useState([]);
   const [searchResults, setSearchResults] = useState(null);
   const [searchButtonPressed, setSearchButtonPressed] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
 
   const handleWebSearch = async () => {
-    try {
+    setIsLoading(true);
     setSearchButtonPressed(true);
+    try {
+      const response = await axios.post('http://localhost:4000/api/url', {
+        url: searchTerm
+      });
 
-    const response = await axios.post('http://localhost:4000/api/url', {
-      url: searchTerm
-    });
+      setSearchResults({
+        data: response.data.result.rows[0].data,
+        created_at: response.data.result.rows[0].created_at,
+        updated_at: response.data.result.rows[0].updated_at
+      });
+    } catch (error) {
+      console.error(`Error making POST request: ${error}`);
+    }
+    setIsLoading(false);
+  }
 
-    setSearchResults(response.data);
-  } catch (error) {
-    console.error(`Error making POST request: ${error}`);
-  }
-  }
   // Function to handle the processed CSV data
   const handleCSVData = (csvData) => {
     // Convert parsed CSV (array of objects) to the expected object format
@@ -137,23 +144,24 @@ function SearchComponent() {
             <Button variant="contained" className={`${classes.button} bg-gray-300 text-black ${showData ? classes.activeButton : ''}`} onClick={() => setShowData(prevShowData => !prevShowData)}>Database</Button>
             <CSVUploadComponent onDataProcessed={handleCSVData} />
           </div>
-          <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', overflow: 'auto', maxHeight: '500px', paddingTop: '10px'}}>
-  {showData && <DataTable data={filteredData} />}
-  {searchButtonPressed && (
-    <Paper style={{ padding: '20px', marginTop: '20px' }}>
-      {searchResults && searchResults.result && searchResults.result.rows && searchResults.result.rows.length > 0 ? (
-        searchResults.result.rows.map((row, index) => (
-          <Typography key={index} variant="body1" style={{ whiteSpace: 'pre-wrap' }}>
-            {row.data}
-          </Typography>
-        ))
-      ) : (
-        <Typography variant="body1">No results found</Typography>
-      )}
-    </Paper>
-  )}
-</div>
-        </div>
+          <div style={{ width: '100%', display: 'fixed', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', overflow: 'auto', maxHeight: '500px', paddingTop: '10px'}}>
+            {showData && <DataTable data={filteredData} />}
+          </div>
+          <div style={{ width: '100%', display: 'fixed', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', overflow: 'auto', maxHeight: '500px', paddingTop: '10px'}}>
+          {searchButtonPressed && (
+              <Paper style={{ padding: '20px', marginTop: '20px', width: '100%' }}>
+                <Typography variant="body1" style={{ wordWrap: 'break-word' }}>
+                  {isLoading ? "Loading..." : searchButtonPressed && searchResults.data}
+                </Typography>
+                  {searchButtonPressed && !isLoading && (
+                <Typography variant="body2">
+                  Created At: {searchResults.created_at}, Updated At: {searchResults.updated_at}
+                </Typography>
+              )}
+            </Paper>
+            )}
+            </div>
+            </div>
       </ThemeProvider>
     </div>
   );
