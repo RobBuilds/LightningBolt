@@ -7,13 +7,43 @@ services:
     ports:
       - "80:80"
     environment:
-      - NODE_ENV=production
+    - NODE_ENV=development
+    depends_on:
+      - server
 
   server:
+    env_file:
+      - ./.env
     build:
       context: ./server
       dockerfile: Dockerfile
     ports:
       - "4000:4000"
+    depends_on:
+      - db
     environment:
-      - NODE_ENV=production
+    - NODE_ENV=development
+    - DATABASE_URL=postgres://postgres:${DB_PASSWORD}@db:5432/${DB_NAME}
+    - CHATGPT_EMAIL=${CHATGPT_EMAIL}
+    - CHATGPT_PASSWORD=${CHATGPT_PASSWORD}
+    - OPENAI_API_KEY=${OPENAI_API_KEY}
+    - DB_HOST=${DB_HOST}
+    - DB_PORT=${DB_PORT}
+    - DB_USER=${DB_USER}
+    - DB_PASSWORD=${DB_PASSWORD}
+    - DB_NAME=${DB_NAME}
+    command: ["sh", "-c", "node src/server.js && npx knex migrate:latest"]
+
+  db:
+    image: postgres:latest
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres_data:
