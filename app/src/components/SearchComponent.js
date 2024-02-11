@@ -56,6 +56,7 @@ function SearchComponent() {
   const [searchResults, setSearchResults] = useState(null);
   const [searchButtonPressed, setSearchButtonPressed] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
 
   const handleWebSearch = async () => {
@@ -73,6 +74,13 @@ function SearchComponent() {
       });
     } catch (error) {
       console.error(`Error making POST request: ${error}`);
+      if (error.response) {
+        setError('There was a problem with the server response.');
+      } else if (error.request) {
+        setError('The server did not respond. Please check your internet connection and try again.');
+      } else {
+        setError('There was a problem sending your request.');
+      }
     }
     setIsLoading(false);
   }
@@ -145,6 +153,7 @@ function SearchComponent() {
             <CSVUploadComponent onDataProcessed={handleCSVData} />
           </div>
           <div style={{ maxWidth: '1000px', display: 'fixed', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', overflow: 'auto', maxHeight: '500px', paddingTop: '10px'}}>
+            {error && <div style={{ color: 'red' }}>{error}</div>}
             {showData && <DataTable data={filteredData} />}
           </div>
           <div style={{ maxWidth: '1000px', display: 'fixed', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', overflow: 'auto', maxHeight: '500px', paddingTop: '10px'}}>

@@ -56,12 +56,14 @@ const aboutDetails = [
   },
   {
     title: "Installation:",
-    content: <ol>
-    <li>Clone the repository: git clone https://github.com/RobBuilds/LightningBolt</li>
-    <li>Navigate to the project directory: cd LightningBolt</li>
-    <li>Install dependencies: npm install</li>
-    <li>Start the app: npm start</li>
-            </ol>
+    content: (
+      <ol>
+        <li>Clone the repository: git clone https://github.com/RobBuilds/LightningBolt</li>
+        <li>Navigate to the project directory: cd LightningBolt</li>
+        <li>Install dependencies: npm install</li>
+        <li>Start the app: npm start</li>
+      </ol>
+    )
   },
   {
     title: "Usage:",
@@ -128,18 +130,7 @@ const AboutPage = ({ open, handleClose }) => {
                   <ListItem alignItems="flex-start" key={index}>
                     <ListItemText
                       primary={detail.title}
-                      secondary={
-                        <React.Fragment>
-                          <Typography
-                            component="span"
-                            variant="body2"
-                            className={classes.inline}
-                            color="textPrimary"
-                          >
-                            {detail.content}
-                          </Typography>
-                        </React.Fragment>
-                      }
+                      secondary={detail.content} // Render content directly without nesting
                     />
                   </ListItem>
                 ))}
