@@ -1,10 +1,15 @@
+// NavBar.js
 import React, { useState } from 'react';
-import { AppBar, Toolbar, IconButton, Drawer, List, ListItem, ListItemText } from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
+import { List, ListItem, ListItemText } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import '../styles/NavBar.css';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import Drawer from '@material-ui/core/Drawer';
 
-function NavBar({ onAboutClick, onContactClick }) {
+function NavBar({ onAboutClick, onContactClick, onDatabaseClick }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const toggleDrawer = (open) => (event) => {
@@ -17,11 +22,16 @@ function NavBar({ onAboutClick, onContactClick }) {
   const handleLinkClick = (text) => {
     if (text === 'About') {
       onAboutClick();
+      toggleDrawer(false);
     }
     if (text === 'Contact') {
       onContactClick();
+      toggleDrawer(false);
     }
-    toggleDrawer(false);
+    if (text === 'Database') {
+      onDatabaseClick();
+      toggleDrawer(false);
+    }
   };
 
   const list = () => (
@@ -31,7 +41,7 @@ function NavBar({ onAboutClick, onContactClick }) {
       onKeyDown={toggleDrawer(false)}
     >
       <List>
-        {['Home', 'About', 'Contact'].map((text, index) => (
+        {['Home', 'About', 'Contact', 'Database'].map((text, index) => (
           <ListItem button key={text} className="list-item" onClick={() => handleLinkClick(text)}>
             <Link to={`/${text.toLowerCase()}`} style={{ textDecoration: 'none', color: 'inherit' }}>
               <ListItemText primary={text} />
