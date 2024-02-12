@@ -106,7 +106,8 @@ function SearchComponent() {
   };
 
   useEffect(() => {
-    if (method) {
+    let newFilteredData = [...data];
+    if (method && searchTerm) {
       const isExactSearch = searchTerm.startsWith('"') && searchTerm.endsWith('"');
       let searchQuery = searchTerm;
       if (isExactSearch) {
@@ -114,17 +115,18 @@ function SearchComponent() {
       } else {
         searchQuery = searchTerm.replace(/\s+/g, '');
       }
-      const newFilteredData = data.filter(item =>
+      newFilteredData = data.filter(item =>
         Object.values(item).some(value => {
-          const stringValue = isExactSearch ? value.toString().toLowerCase() : value.toString().replace(/\s+/g, '').toLowerCase();
-          const queryValue = searchQuery.toLowerCase();
-          return isExactSearch ? stringValue.includes(queryValue) : stringValue.includes(queryValue);
+          if (value !== undefined) {
+            const stringValue = isExactSearch ? value.toString().toLowerCase() : value.toString().replace(/\s+/g, '').toLowerCase();
+            const queryValue = searchQuery.toLowerCase();
+            return isExactSearch ? stringValue.includes(queryValue) : stringValue.includes(queryValue);
+          }
+          return false;
         })
       );
-      setFilteredData(newFilteredData);
-    } else {
-      setFilteredData(data);
     }
+    setFilteredData(newFilteredData);
   }, [searchTerm, data, method]);
 
   const handleSearchChange = (event) => {
