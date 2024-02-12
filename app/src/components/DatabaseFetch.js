@@ -36,7 +36,8 @@ function DataFetchComponent() {
     setIsLoading(true);
     try {
       const response = await axios.get('http://localhost:4000/api/analysis_results');
-      setData(response.data);
+      const dataWithIds = response.data.map((item, index) => ({ ...item, id: index }));
+      setData(dataWithIds);
     } catch (error) {
       console.error("Error fetching data:", error);
       setError('Error fetching data');

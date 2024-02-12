@@ -15,7 +15,6 @@ const cors = require('cors');
 const puppeteer = require("puppeteer");
 const dotenv = require('dotenv');
 const fs = require('fs');
-const csv = require('csv-parser');
 const pgp = require('pg-promise')();
 const stream = require('stream');
 dotenv.config();
@@ -112,41 +111,19 @@ function startServer() {
         }
     });
 
-// CSV upload for database insertion
-app.post('/api/csv_scan', async (req, res) => {
-    const csvDataString = req.body.data; // Changed from req.data to req.body.data
+    app.post('/api/csv_scan', async (req, res) => {
+        const csvData = req.body.csvData; // Extract CSV data from the request body
 
-    if (!csvDataString) {
-        return res.status(400).send('No data was uploaded.');
-    }
+        try {
+            // Insert CSV data into the database table using Knex
+            await knex('csv_scan').insert(csvData);
 
-    const csvData = [];
-    const csvStream = stream.Readable.from(csvDataString);
-
-    csvStream
-        .pipe(csv.parse({ headers: true })) // Parse headers from the CSV file
-        .on('data', (row) => {
-            // Map the row object to match the structure of your table
-            const mappedRow = {
-                data: row.data,
-                'f/p': row['f/p'],
-                module: row.module,
-                scanName: row.scanName,
-                source: row.source,
-                type: row.type,
-            };
-            csvData.push(mappedRow);
-        })
-        .on('end', async () => {
-            try {
-                await knex('csv_scan').insert(csvData);
-                res.send('CSV data has been successfully uploaded to the database.');
-            } catch (error) {
-                console.error('Error inserting data:', error);
-                res.status(500).send('An error occurred while uploading CSV data to the database.');
-            }
-        });
-});
+            res.status(200).json({ message: 'CSV data inserted successfully' });
+        } catch (error) {
+            console.error('Error inserting CSV data:', error);
+            res.status(500).json({ error: 'Failed to insert CSV data into the database' });
+        }
+    });
 
     app.post('/api/analysis_results', async (req, res) => {
         try {

@@ -56,12 +56,16 @@ function SearchComponent() {
   const [searchResults, setSearchResults] = useState(null);
   const [searchButtonPressed, setSearchButtonPressed] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
 
 
   const handleWebSearch = async () => {
     setIsLoading(true);
     setSearchButtonPressed(true);
+    if (!searchTerm) {
+      alert('You must enter a URL to perform a search.');
+      setIsLoading(false);
+      return;
+    }
     try {
       const response = await axios.post('http://localhost:4000/api/url', {
         url: searchTerm
@@ -75,30 +79,36 @@ function SearchComponent() {
     } catch (error) {
       console.error(`Error making POST request: ${error}`);
       if (error.response) {
-        setError('There was a problem with the server response.');
+        alert('There was a problem with the server response.');
       } else if (error.request) {
-        setError('The server did not respond. Please check your internet connection and try again.');
+        alert('The server did not respond. Please check your internet connection and try again.');
       } else {
-        setError('There was a problem sending your request.');
+        alert('There was a problem sending your request.');
       }
     }
     setIsLoading(false);
   }
 
   // Function to handle the processed CSV data
-  const handleCSVData = (csvData) => {
-    // Convert parsed CSV (array of objects) to the expected object format
+  const handleCSVData = async (csvData) => {
     const formattedData = csvData.map((item, index) => ({
-      id: index + 1, // Assigning a unique ID
-      scanName: item['Scan Name'], // Make sure the keys match the CSV header names
+      id: index + 1,
+      scanName: item['Scan Name'],
       type: item['Type'],
       module: item['Module'],
       source: item['Source'],
-      'f/p': item['F/P'], // If F/P is a column name in your CSV, ensure it's written exactly as in the CSV
-      data: item['Data'], // Same as above, ensure it matches the CSV header name
+      'f/p': item['F/P'],
+      data: item['Data'],
     }));
-    setData(formattedData); // Update the state with the formatted data
-    setShowData(true); // Set the flag to show the data table
+    setData(formattedData);
+    setShowData(true);
+
+    // Send a POST request with the CSV data to your server
+    try {
+      await axios.post('http://localhost:4000/api/csv_scan', formattedData);
+    } catch (error) {
+      console.error(`Error sending CSV data to server: ${error}`);
+    }
   };
 
   const handleToggle = () => {
@@ -153,7 +163,6 @@ function SearchComponent() {
             <CSVUploadComponent onDataProcessed={handleCSVData} />
           </div>
           <div style={{ maxWidth: '1000px', display: 'fixed', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', overflow: 'auto', maxHeight: '500px', paddingTop: '10px'}}>
-            {error && <div style={{ color: 'red' }}>{error}</div>}
             {showData && <DataTable data={filteredData} />}
           </div>
           <div style={{ maxWidth: '1000px', display: 'fixed', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', overflow: 'auto', maxHeight: '500px', paddingTop: '10px'}}>
