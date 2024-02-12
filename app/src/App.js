@@ -42,12 +42,13 @@ function App() {
       />
       <SearchComponent />
       <div className="app-container">
-        <Routes>
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/database" element={<DatabaseFetch />} />
-          <Route path="/emailsearch" element={<SearchAddress />} />
-        </Routes>
+      <Routes>
+        <Route path="/" element={<div>Home</div>} /> {/* Add this line */}
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/database" element={<DatabaseFetch />} />
+        <Route path="/emailsearch" element={<SearchAddress />} />
+      </Routes>
       </div>
       <AboutPage open={aboutOpen} handleClose={handleAboutClose} />
       <ContactPage open={contactOpen} onClose={handleContactClose} />
