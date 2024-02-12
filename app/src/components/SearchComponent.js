@@ -5,7 +5,7 @@ import DataTable from './DataTable';
 import CSVUploadComponent from './CSVUploadComponent';
 import '../styles/fonts.css';
 import axios from 'axios';
-
+const api_key = "58e67f389627b16e2b18bf6ecb18ea99ab9dff9d";
 const useStyles = makeStyles({
   root: {
     '& .MuiOutlinedInput-root': {
@@ -56,6 +56,7 @@ function SearchComponent() {
   const [searchResults, setSearchResults] = useState(null);
   const [searchButtonPressed, setSearchButtonPressed] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
 
   const handleWebSearch = async () => {
@@ -141,6 +142,44 @@ function SearchComponent() {
     setSearchTerm(event.target.value);
   };
 
+  function SearchAddress() {
+    const handleSearch = async (e) => {
+      e.preventDefault();
+      const url = `https://api.hunter.io/v2/email-finder?domain=${site}&first_name=${firstName}&last_name=${lastName}&api_key=${api_key}`;
+      const res = await fetch(url);
+      const data = await res.json();
+      setEmailSearchResults(data);
+    }
+    return (
+      <form className="nav-bar" onSubmit={handleSearch}>
+      <div className="search-wrapper">
+          <input
+              className="Search"
+              type="text"
+              placeholder="Search Web Address, First Name, Last Name"
+              value={`${site} ${firstName} ${lastName}`}
+              onChange={(e) => {
+                  const [siteValue, firstNameValue, lastNameValue] = e.target.value.split(' ');
+                  setSite(siteValue);
+                  setFirstName(firstNameValue);
+                  setLastName(lastNameValue);
+              }}
+          />
+        </div>
+        {emailSearchResults && (
+          <div>
+            <h2>Email: {emailSearchResults.data.email}</h2>
+            <p>Score: {emailSearchResults.data.score}</p>
+            <p>Position: {emailSearchResults.data.position}</p>
+            <p>Company: {emailSearchResults.data.company}</p>
+            <p>Phone Number: {emailSearchResults.data.phone_number}</p>
+            <p>Twitter: {emailSearchResults.data.twitter}</p>
+            <p>Linkedin: {emailSearchResults.data.linkedin_url}</p>
+          </div>
+        )}
+      </form>
+    )}
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '0px'}}>
       <ThemeProvider theme={theme}>
@@ -160,6 +199,7 @@ function SearchComponent() {
             <Button variant="contained" className={`${classes.button} bg-gray-300 text-black`} onClick={handleWebSearch}>Web Search</Button>
             <Button variant="contained" className={`${classes.button} bg-gray-300 text-black`} onClick={() => window.location.href = 'http://localhost:5001'}>Spiderfoot</Button>
             <Button variant="contained" className={`${classes.button} bg-gray-300 text-black ${showData ? classes.activeButton : ''}`} onClick={() => setShowData(prevShowData => !prevShowData)}>Database</Button>
+            <Button variant="contained" className={`${classes.button} bg-gray-300 text-black`} onClick={SearchAddress}>Email Finder</Button>
             <CSVUploadComponent onDataProcessed={handleCSVData} />
           </div>
           <div style={{ maxWidth: '1000px', display: 'fixed', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', overflow: 'auto', maxHeight: '500px', paddingTop: '10px'}}>
