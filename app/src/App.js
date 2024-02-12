@@ -12,7 +12,6 @@ import SearchAddress from './components/EmailSearch'
 function App() {
   const [aboutOpen, setAboutOpen] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
-  const [emailOpen, setEmailOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleAboutOpen = () => {
