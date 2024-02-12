@@ -1,12 +1,13 @@
 exports.up = function(knex) {
   return knex.schema.createTable('csv_scan', function(table) {
     table.increments('id').primary();
-    table.text('data');
-    table.string('f/p');
-    table.string('module');
-    table.string('scanName');
-    table.string('source');
-    table.string('type');
+    table.text('Scan Name');
+    table.text('Updated');
+    table.text('Type');
+    table.text('Module');
+    table.text('Source');
+    table.text('F/P');
+    table.text('Data', 'longtext');
   });
 };
 
