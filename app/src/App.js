@@ -15,15 +15,6 @@ function App() {
   const [emailOpen, setEmailOpen] = useState(false);
   const navigate = useNavigate();
 
-  const handleEmailOpen = () => {
-    setEmailOpen(true);
-  };
-
-  const handleEmailClose = () => {
-    setEmailOpen(false);
-    navigate('/')
-  };
-
   const handleAboutOpen = () => {
     setAboutOpen(true);
   };

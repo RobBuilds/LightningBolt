@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-const api_key = "58e67f389627b16e2b18bf6ecb18ea99ab9dff9d";
 export default function SearchAddress() {
+  const api_key = process.env.REACT_APP_EMAIL_API_KEY
   const [site, setSite] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
