@@ -15,8 +15,9 @@ const cors = require('cors');
 const puppeteer = require("puppeteer");
 const dotenv = require('dotenv');
 const fs = require('fs');
-const csv = require('csv-parse');
+const csv = require('csv-parser');
 const pgp = require('pg-promise')();
+const stream = require('stream');
 dotenv.config();
 
 // Import services
@@ -37,8 +38,10 @@ function startServer() {
 
     // Middleware
     app.use(express.urlencoded({ extended: true }));
+    app.use(express.json({ limit: '50mb'}));
     app.use(express.json());
     app.use(cors());
+
 
     // Mount routes
     app.use('/chatGpt', chatGptRoutes);
@@ -49,13 +52,17 @@ function startServer() {
         res.send("Welcome to the server!");
     });
 
-        // Routes
-        app.get("/api/csv_scan", (req, res) => {
-            res.send("Upload is workin properly!");
-        });
-
     app.get("/api", (req, res) => {
         res.send({ message: "API is up and running!" });
+    });
+
+    // Routes
+    app.get("/api/csv_scan", (req, res) => {
+        res.send("Upload is workin properly!");
+    });
+
+    app.get("/api/analysis_results", (req, res) => {
+        res.send("Analysis results are working properly!");
     });
 
     app.post("/api/url", async (req, res) => {
@@ -84,7 +91,8 @@ function startServer() {
 
         const websiteContent = await page.evaluate(() => document.documentElement.innerText.trim());
         const websiteOgImage = await page.evaluate(() => {
-            // Extraction logic for 'og:image' content, assuming it's implemented above
+            const metaOgImage = document.querySelector('meta[property="og:image"]');
+            return metaOgImage ? metaOgImage.content : null;
         });
 
         try {
@@ -104,22 +112,41 @@ function startServer() {
         }
     });
 
-    // CSV upload for database insertion
-    app.post('/api/csv_scan', async (req, res) => {
-    const csvData = req.body.data;
+// CSV upload for database insertion
+app.post('/api/csv_scan', async (req, res) => {
+    const csvDataString = req.body.data; // Changed from req.data to req.body.data
 
-    if (!csvData) {
+    if (!csvDataString) {
         return res.status(400).send('No data was uploaded.');
     }
 
-    try {
-        await knex('csv_scan').insert(csvData);
-        res.send('CSV data has been successfully uploaded to the database.');
-    } catch (error) {
-        console.error('Error inserting data:', error);
-        res.status(500).send('An error occurred while uploading CSV data to the database.');
-    }
-    });
+    const csvData = [];
+    const csvStream = stream.Readable.from(csvDataString);
+
+    csvStream
+        .pipe(csv.parse({ headers: true })) // Parse headers from the CSV file
+        .on('data', (row) => {
+            // Map the row object to match the structure of your table
+            const mappedRow = {
+                data: row.data,
+                'f/p': row['f/p'],
+                module: row.module,
+                scanName: row.scanName,
+                source: row.source,
+                type: row.type,
+            };
+            csvData.push(mappedRow);
+        })
+        .on('end', async () => {
+            try {
+                await knex('csv_scan').insert(csvData);
+                res.send('CSV data has been successfully uploaded to the database.');
+            } catch (error) {
+                console.error('Error inserting data:', error);
+                res.status(500).send('An error occurred while uploading CSV data to the database.');
+            }
+        });
+});
 
     app.post('/api/analysis_results', async (req, res) => {
         try {
