@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import Papa from 'papaparse';
-import axios from 'axios';
 
-function CSVUploadComponent() {
+function CSVUploadComponent({ onDataProcessed }) {
   const [file, setFile] = useState(null);
 
   const handleFileChange = (e) => {
@@ -13,14 +12,9 @@ function CSVUploadComponent() {
     if (file) {
       Papa.parse(file, {
         header: true,
-        complete: async (result) => {
+        complete: (result) => {
           console.log('Parsed CSV data:', result.data);
-          try {
-            const response = await axios.post('/api/csv_scan', { data: result.data });
-            console.log('Data uploaded to the database:', response.data);
-          } catch (error) {
-            console.error('Error while uploading data to the database:', error);
-          }
+          onDataProcessed(result.data);
         },
         error: (error) => {
           console.error('Error while parsing CSV:', error);
