@@ -7,6 +7,7 @@ import AboutPage from './components/AboutPage';
 import ContactPage from './components/ContactPage';
 import DatabaseFetch from './components/DatabaseFetch';
 import { Routes, Route, useNavigate } from 'react-router-dom';
+import SearchAddress from './components/EmailSearch'
 
 function App() {
   const [aboutOpen, setAboutOpen] = useState(false);
@@ -37,6 +38,7 @@ function App() {
         onAboutClick={handleAboutOpen}
         onContactClick={handleContactOpen}
         onDatabaseClick={() => navigate('/database')}
+        onEmailClick={() => navigate('/emailsearch')}
       />
       <SearchComponent />
       <div className="app-container">
@@ -44,6 +46,7 @@ function App() {
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/database" element={<DatabaseFetch />} />
+          <Route path="/emailsearch" element={<SearchAddress />} />
         </Routes>
       </div>
       <AboutPage open={aboutOpen} handleClose={handleAboutClose} />
