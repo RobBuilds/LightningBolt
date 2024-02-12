@@ -32,6 +32,7 @@ services:
     - DB_USER=${DB_USER}
     - DB_PASSWORD=${DB_PASSWORD}
     - DB_NAME=${DB_NAME}
+    - REACT_APP_EMAIL_API_KEY=${REACT_APP_EMAIL_API_KEY}
     command: ["sh", "-c", "node src/server.js && npx knex migrate:latest"]
 
   db:

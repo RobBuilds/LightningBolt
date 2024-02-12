@@ -3,6 +3,9 @@ import { DataGrid } from '@mui/x-data-grid';
 import '../styles/DataGrid.css';
 
 function DataTable({ data = [] }) { // Default data to an empty array if not provided
+  // Generate unique IDs for each row
+  const rowsWithIds = data.map((row, index) => ({ ...row, id: index + 1 }));
+
   const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
     { field: 'scanName', headerName: 'Scan Name', width: 200 },
@@ -17,7 +20,7 @@ function DataTable({ data = [] }) { // Default data to an empty array if not pro
     <div style={{ height: 400, width: '100%' }}>
       <DataGrid
         className="dataGrid"
-        rows={data.length ? data : []}
+        rows={rowsWithIds}
         columns={columns}
         pageSize={5}
         rowsPerPageOptions={[5]}
@@ -30,7 +33,7 @@ function DataTable({ data = [] }) { // Default data to an empty array if not pro
       />
     </div>
   );
-
 }
 
 export default DataTable;
+

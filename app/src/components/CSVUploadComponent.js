@@ -14,6 +14,8 @@ function CSVUploadComponent({ onDataProcessed }) {
         header: true,
         complete: (result) => {
           console.log('Parsed CSV data:', result.data);
+          // Post the parsed CSV data to your server
+          postCSVDataToServer(result.data);
           onDataProcessed(result.data);
         },
         error: (error) => {
@@ -22,6 +24,27 @@ function CSVUploadComponent({ onDataProcessed }) {
       });
     } else {
       console.error('No file selected');
+    }
+  };
+
+  const postCSVDataToServer = async (csvData) => {
+    try {
+      const response = await fetch('http://localhost:4000/api/csv_scan', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ csvData })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to upload CSV data');
+      }
+
+      const responseData = await response.json();
+      console.log('Server response:', responseData);
+    } catch (error) {
+      console.error('Error posting CSV data to server:', error);
     }
   };
 
