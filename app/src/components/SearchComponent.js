@@ -5,7 +5,7 @@ import DataTable from './DataTable';
 import CSVUploadComponent from './CSVUploadComponent';
 import '../styles/fonts.css';
 import axios from 'axios';
-const api_key = "58e67f389627b16e2b18bf6ecb18ea99ab9dff9d";
+
 const useStyles = makeStyles({
   root: {
     '& .MuiOutlinedInput-root': {
@@ -62,11 +62,6 @@ function SearchComponent() {
   const handleWebSearch = async () => {
     setIsLoading(true);
     setSearchButtonPressed(true);
-    if (!searchTerm) {
-      alert('You must enter a URL to perform a search.');
-      setIsLoading(false);
-      return;
-    }
     try {
       const response = await axios.post('http://localhost:4000/api/url', {
         url: searchTerm
@@ -80,36 +75,30 @@ function SearchComponent() {
     } catch (error) {
       console.error(`Error making POST request: ${error}`);
       if (error.response) {
-        alert('There was a problem with the server response.');
+        setError('There was a problem with the server response.');
       } else if (error.request) {
-        alert('The server did not respond. Please check your internet connection and try again.');
+        setError('The server did not respond. Please check your internet connection and try again.');
       } else {
-        alert('There was a problem sending your request.');
+        setError('There was a problem sending your request.');
       }
     }
     setIsLoading(false);
   }
 
   // Function to handle the processed CSV data
-  const handleCSVData = async (csvData) => {
+  const handleCSVData = (csvData) => {
+    // Convert parsed CSV (array of objects) to the expected object format
     const formattedData = csvData.map((item, index) => ({
-      id: index + 1,
-      scanName: item['Scan Name'],
+      id: index + 1, // Assigning a unique ID
+      scanName: item['Scan Name'], // Make sure the keys match the CSV header names
       type: item['Type'],
       module: item['Module'],
       source: item['Source'],
-      'f/p': item['F/P'],
-      data: item['Data'],
+      'f/p': item['F/P'], // If F/P is a column name in your CSV, ensure it's written exactly as in the CSV
+      data: item['Data'], // Same as above, ensure it matches the CSV header name
     }));
-    setData(formattedData);
-    setShowData(true);
-
-    // Send a POST request with the CSV data to your server
-    try {
-      await axios.post('http://localhost:4000/api/csv_scan', formattedData);
-    } catch (error) {
-      console.error(`Error sending CSV data to server: ${error}`);
-    }
+    setData(formattedData); // Update the state with the formatted data
+    setShowData(true); // Set the flag to show the data table
   };
 
   const handleToggle = () => {
@@ -142,44 +131,6 @@ function SearchComponent() {
     setSearchTerm(event.target.value);
   };
 
-  function SearchAddress() {
-    const handleSearch = async (e) => {
-      e.preventDefault();
-      const url = `https://api.hunter.io/v2/email-finder?domain=${site}&first_name=${firstName}&last_name=${lastName}&api_key=${api_key}`;
-      const res = await fetch(url);
-      const data = await res.json();
-      setEmailSearchResults(data);
-    }
-    return (
-      <form className="nav-bar" onSubmit={handleSearch}>
-      <div className="search-wrapper">
-          <input
-              className="Search"
-              type="text"
-              placeholder="Search Web Address, First Name, Last Name"
-              value={`${site} ${firstName} ${lastName}`}
-              onChange={(e) => {
-                  const [siteValue, firstNameValue, lastNameValue] = e.target.value.split(' ');
-                  setSite(siteValue);
-                  setFirstName(firstNameValue);
-                  setLastName(lastNameValue);
-              }}
-          />
-        </div>
-        {emailSearchResults && (
-          <div>
-            <h2>Email: {emailSearchResults.data.email}</h2>
-            <p>Score: {emailSearchResults.data.score}</p>
-            <p>Position: {emailSearchResults.data.position}</p>
-            <p>Company: {emailSearchResults.data.company}</p>
-            <p>Phone Number: {emailSearchResults.data.phone_number}</p>
-            <p>Twitter: {emailSearchResults.data.twitter}</p>
-            <p>Linkedin: {emailSearchResults.data.linkedin_url}</p>
-          </div>
-        )}
-      </form>
-    )}
-
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '0px'}}>
       <ThemeProvider theme={theme}>
@@ -199,10 +150,10 @@ function SearchComponent() {
             <Button variant="contained" className={`${classes.button} bg-gray-300 text-black`} onClick={handleWebSearch}>Web Search</Button>
             <Button variant="contained" className={`${classes.button} bg-gray-300 text-black`} onClick={() => window.location.href = 'http://localhost:5001'}>Spiderfoot</Button>
             <Button variant="contained" className={`${classes.button} bg-gray-300 text-black ${showData ? classes.activeButton : ''}`} onClick={() => setShowData(prevShowData => !prevShowData)}>Database</Button>
-            <Button variant="contained" className={`${classes.button} bg-gray-300 text-black`} onClick={SearchAddress}>Email Finder</Button>
             <CSVUploadComponent onDataProcessed={handleCSVData} />
           </div>
           <div style={{ maxWidth: '1000px', display: 'fixed', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', overflow: 'auto', maxHeight: '500px', paddingTop: '10px'}}>
+            {error && <div style={{ color: 'red' }}>{error}</div>}
             {showData && <DataTable data={filteredData} />}
           </div>
           <div style={{ maxWidth: '1000px', display: 'fixed', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', overflow: 'auto', maxHeight: '500px', paddingTop: '10px'}}>

@@ -9,7 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Drawer from '@material-ui/core/Drawer';
 
-function NavBar({ onAboutClick, onContactClick, onDatabaseClick }) {
+function NavBar({ onAboutClick, onContactClick, onDatabaseClick, onEmailClick }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const toggleDrawer = (open) => (event) => {
@@ -32,6 +32,10 @@ function NavBar({ onAboutClick, onContactClick, onDatabaseClick }) {
       onDatabaseClick();
       toggleDrawer(false);
     }
+    if (text === 'Email Finder') {
+      onEmailClick();
+      toggleDrawer(false);
+    }
   };
 
   const list = () => (
@@ -41,7 +45,7 @@ function NavBar({ onAboutClick, onContactClick, onDatabaseClick }) {
       onKeyDown={toggleDrawer(false)}
     >
       <List>
-        {['Home', 'About', 'Contact', 'Database'].map((text, index) => (
+        {['Home', 'About', 'Contact', 'Database', 'Email Finder'].map((text, index) => (
           <ListItem button key={text} className="list-item" onClick={() => handleLinkClick(text)}>
             <Link to={`/${text.toLowerCase()}`} style={{ textDecoration: 'none', color: 'inherit' }}>
               <ListItemText primary={text} />
