@@ -61,7 +61,6 @@ function App() {
       </div>
       <AboutPage open={aboutOpen} handleClose={handleAboutClose} />
       <ContactPage open={contactOpen} onClose={handleContactClose} />
-      <SearchAddress open={emailOpen} onClose={handleEmailClose} />
     </div>
   );
 }
